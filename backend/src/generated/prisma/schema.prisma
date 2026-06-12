@@ -22,19 +22,22 @@ enum FineStatus {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
+  id           Int         @id @default(autoincrement())
   name         String
-  email        String    @unique
+  email        String      @unique
   password     String
   role         Role
   phone        String?
+  nic          String?     @unique
+  dlNo         String?     @unique
   districtId   Int?
-  isActive     Boolean   @default(true)
+  isActive     Boolean     @default(true)
   refreshToken String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  district     District? @relation("UserDistrict", fields: [districtId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  district     District?   @relation("UserDistrict", fields: [districtId], references: [id])
   officer      Officer?
+  savedCards   SavedCard[]
 }
 
 model District {
@@ -72,6 +75,8 @@ model Fine {
   driverName  String
   driverPhone String?
   driverNIC   String?
+  driverDL    String?
+  driverEmail String?
   offenseDate DateTime
   location    String
   categoryId  Int
@@ -109,4 +114,15 @@ model SMSLog {
   sid          String?
   sentAt       DateTime @default(now())
   payment      Payment  @relation(fields: [paymentId], references: [id])
+}
+
+model SavedCard {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  cardholderName String
+  cardNumber     String // Masked card number: e.g. **** **** **** 4242
+  expiry         String // MM/YY
+  brand          String // Visa, MasterCard, etc.
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

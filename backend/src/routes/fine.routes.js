@@ -77,23 +77,20 @@ router.post(
       .trim()
       .notEmpty()
       .withMessage("Vehicle number is required"),
-    body("driverName").trim().notEmpty().withMessage("Driver name is required"),
-    body("driverPhone")
-      .optional()
-      .isString()
-      .withMessage("Driver phone must be a string"),
-    body("driverNIC")
-      .optional()
-      .isString()
-      .withMessage("Driver NIC must be a string"),
-    body("offenseDate")
-      .isISO8601()
-      .withMessage("Valid offense date is required"),
-    body("location").trim().notEmpty().withMessage("Location is required"),
+    body("driverIdentifier")
+      .trim()
+      .notEmpty()
+      .withMessage("Driver's NIC or License number is required"),
     body("categoryId")
       .isInt({ min: 1 })
       .withMessage("Valid category ID is required"),
-    body("notes").optional().isString().withMessage("Notes must be a string"),
+    body("notes")
+      .trim()
+      .notEmpty()
+      .withMessage("Notes/Remarks are required"),
+    body("location")
+      .optional()
+      .trim(),
   ],
   validate,
   createFine,

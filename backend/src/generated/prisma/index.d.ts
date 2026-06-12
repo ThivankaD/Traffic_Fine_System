@@ -48,6 +48,11 @@ export type Payment = $Result.DefaultSelection<Prisma.$PaymentPayload>
  * 
  */
 export type SMSLog = $Result.DefaultSelection<Prisma.$SMSLogPayload>
+/**
+ * Model SavedCard
+ * 
+ */
+export type SavedCard = $Result.DefaultSelection<Prisma.$SavedCardPayload>
 
 /**
  * Enums
@@ -270,6 +275,16 @@ export class PrismaClient<
     * ```
     */
   get sMSLog(): Prisma.SMSLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.savedCard`: Exposes CRUD operations for the **SavedCard** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SavedCards
+    * const savedCards = await prisma.savedCard.findMany()
+    * ```
+    */
+  get savedCard(): Prisma.SavedCardDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -710,7 +725,8 @@ export namespace Prisma {
     FineCategory: 'FineCategory',
     Fine: 'Fine',
     Payment: 'Payment',
-    SMSLog: 'SMSLog'
+    SMSLog: 'SMSLog',
+    SavedCard: 'SavedCard'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -726,7 +742,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "district" | "officer" | "fineCategory" | "fine" | "payment" | "sMSLog"
+      modelProps: "user" | "district" | "officer" | "fineCategory" | "fine" | "payment" | "sMSLog" | "savedCard"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1248,6 +1264,80 @@ export namespace Prisma {
           }
         }
       }
+      SavedCard: {
+        payload: Prisma.$SavedCardPayload<ExtArgs>
+        fields: Prisma.SavedCardFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SavedCardFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SavedCardFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload>
+          }
+          findFirst: {
+            args: Prisma.SavedCardFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SavedCardFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload>
+          }
+          findMany: {
+            args: Prisma.SavedCardFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload>[]
+          }
+          create: {
+            args: Prisma.SavedCardCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload>
+          }
+          createMany: {
+            args: Prisma.SavedCardCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SavedCardCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload>[]
+          }
+          delete: {
+            args: Prisma.SavedCardDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload>
+          }
+          update: {
+            args: Prisma.SavedCardUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload>
+          }
+          deleteMany: {
+            args: Prisma.SavedCardDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SavedCardUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SavedCardUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload>[]
+          }
+          upsert: {
+            args: Prisma.SavedCardUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedCardPayload>
+          }
+          aggregate: {
+            args: Prisma.SavedCardAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSavedCard>
+          }
+          groupBy: {
+            args: Prisma.SavedCardGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SavedCardGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SavedCardCountArgs<ExtArgs>
+            result: $Utils.Optional<SavedCardCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1363,6 +1453,7 @@ export namespace Prisma {
     fine?: FineOmit
     payment?: PaymentOmit
     sMSLog?: SMSLogOmit
+    savedCard?: SavedCardOmit
   }
 
   /* Types for Logging */
@@ -1436,6 +1527,37 @@ export namespace Prisma {
   /**
    * Count Types
    */
+
+
+  /**
+   * Count Type UserCountOutputType
+   */
+
+  export type UserCountOutputType = {
+    savedCards: number
+  }
+
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    savedCards?: boolean | UserCountOutputTypeCountSavedCardsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSavedCardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedCardWhereInput
+  }
 
 
   /**
@@ -1604,6 +1726,8 @@ export namespace Prisma {
     password: string | null
     role: $Enums.Role | null
     phone: string | null
+    nic: string | null
+    dlNo: string | null
     districtId: number | null
     isActive: boolean | null
     refreshToken: string | null
@@ -1618,6 +1742,8 @@ export namespace Prisma {
     password: string | null
     role: $Enums.Role | null
     phone: string | null
+    nic: string | null
+    dlNo: string | null
     districtId: number | null
     isActive: boolean | null
     refreshToken: string | null
@@ -1632,6 +1758,8 @@ export namespace Prisma {
     password: number
     role: number
     phone: number
+    nic: number
+    dlNo: number
     districtId: number
     isActive: number
     refreshToken: number
@@ -1658,6 +1786,8 @@ export namespace Prisma {
     password?: true
     role?: true
     phone?: true
+    nic?: true
+    dlNo?: true
     districtId?: true
     isActive?: true
     refreshToken?: true
@@ -1672,6 +1802,8 @@ export namespace Prisma {
     password?: true
     role?: true
     phone?: true
+    nic?: true
+    dlNo?: true
     districtId?: true
     isActive?: true
     refreshToken?: true
@@ -1686,6 +1818,8 @@ export namespace Prisma {
     password?: true
     role?: true
     phone?: true
+    nic?: true
+    dlNo?: true
     districtId?: true
     isActive?: true
     refreshToken?: true
@@ -1787,6 +1921,8 @@ export namespace Prisma {
     password: string
     role: $Enums.Role
     phone: string | null
+    nic: string | null
+    dlNo: string | null
     districtId: number | null
     isActive: boolean
     refreshToken: string | null
@@ -1820,6 +1956,8 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     phone?: boolean
+    nic?: boolean
+    dlNo?: boolean
     districtId?: boolean
     isActive?: boolean
     refreshToken?: boolean
@@ -1827,6 +1965,8 @@ export namespace Prisma {
     updatedAt?: boolean
     district?: boolean | User$districtArgs<ExtArgs>
     officer?: boolean | User$officerArgs<ExtArgs>
+    savedCards?: boolean | User$savedCardsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1836,6 +1976,8 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     phone?: boolean
+    nic?: boolean
+    dlNo?: boolean
     districtId?: boolean
     isActive?: boolean
     refreshToken?: boolean
@@ -1851,6 +1993,8 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     phone?: boolean
+    nic?: boolean
+    dlNo?: boolean
     districtId?: boolean
     isActive?: boolean
     refreshToken?: boolean
@@ -1866,6 +2010,8 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     phone?: boolean
+    nic?: boolean
+    dlNo?: boolean
     districtId?: boolean
     isActive?: boolean
     refreshToken?: boolean
@@ -1873,10 +2019,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "phone" | "districtId" | "isActive" | "refreshToken" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "phone" | "nic" | "dlNo" | "districtId" | "isActive" | "refreshToken" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     district?: boolean | User$districtArgs<ExtArgs>
     officer?: boolean | User$officerArgs<ExtArgs>
+    savedCards?: boolean | User$savedCardsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     district?: boolean | User$districtArgs<ExtArgs>
@@ -1890,6 +2038,7 @@ export namespace Prisma {
     objects: {
       district: Prisma.$DistrictPayload<ExtArgs> | null
       officer: Prisma.$OfficerPayload<ExtArgs> | null
+      savedCards: Prisma.$SavedCardPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1898,6 +2047,8 @@ export namespace Prisma {
       password: string
       role: $Enums.Role
       phone: string | null
+      nic: string | null
+      dlNo: string | null
       districtId: number | null
       isActive: boolean
       refreshToken: string | null
@@ -2299,6 +2450,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     district<T extends User$districtArgs<ExtArgs> = {}>(args?: Subset<T, User$districtArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     officer<T extends User$officerArgs<ExtArgs> = {}>(args?: Subset<T, User$officerArgs<ExtArgs>>): Prisma__OfficerClient<$Result.GetResult<Prisma.$OfficerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    savedCards<T extends User$savedCardsArgs<ExtArgs> = {}>(args?: Subset<T, User$savedCardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2334,6 +2486,8 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly phone: FieldRef<"User", 'String'>
+    readonly nic: FieldRef<"User", 'String'>
+    readonly dlNo: FieldRef<"User", 'String'>
     readonly districtId: FieldRef<"User", 'Int'>
     readonly isActive: FieldRef<"User", 'Boolean'>
     readonly refreshToken: FieldRef<"User", 'String'>
@@ -2775,6 +2929,30 @@ export namespace Prisma {
      */
     include?: OfficerInclude<ExtArgs> | null
     where?: OfficerWhereInput
+  }
+
+  /**
+   * User.savedCards
+   */
+  export type User$savedCardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    where?: SavedCardWhereInput
+    orderBy?: SavedCardOrderByWithRelationInput | SavedCardOrderByWithRelationInput[]
+    cursor?: SavedCardWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SavedCardScalarFieldEnum | SavedCardScalarFieldEnum[]
   }
 
   /**
@@ -6194,6 +6372,8 @@ export namespace Prisma {
     driverName: string | null
     driverPhone: string | null
     driverNIC: string | null
+    driverDL: string | null
+    driverEmail: string | null
     offenseDate: Date | null
     location: string | null
     categoryId: number | null
@@ -6211,6 +6391,8 @@ export namespace Prisma {
     driverName: string | null
     driverPhone: string | null
     driverNIC: string | null
+    driverDL: string | null
+    driverEmail: string | null
     offenseDate: Date | null
     location: string | null
     categoryId: number | null
@@ -6228,6 +6410,8 @@ export namespace Prisma {
     driverName: number
     driverPhone: number
     driverNIC: number
+    driverDL: number
+    driverEmail: number
     offenseDate: number
     location: number
     categoryId: number
@@ -6259,6 +6443,8 @@ export namespace Prisma {
     driverName?: true
     driverPhone?: true
     driverNIC?: true
+    driverDL?: true
+    driverEmail?: true
     offenseDate?: true
     location?: true
     categoryId?: true
@@ -6276,6 +6462,8 @@ export namespace Prisma {
     driverName?: true
     driverPhone?: true
     driverNIC?: true
+    driverDL?: true
+    driverEmail?: true
     offenseDate?: true
     location?: true
     categoryId?: true
@@ -6293,6 +6481,8 @@ export namespace Prisma {
     driverName?: true
     driverPhone?: true
     driverNIC?: true
+    driverDL?: true
+    driverEmail?: true
     offenseDate?: true
     location?: true
     categoryId?: true
@@ -6397,6 +6587,8 @@ export namespace Prisma {
     driverName: string
     driverPhone: string | null
     driverNIC: string | null
+    driverDL: string | null
+    driverEmail: string | null
     offenseDate: Date
     location: string
     categoryId: number
@@ -6433,6 +6625,8 @@ export namespace Prisma {
     driverName?: boolean
     driverPhone?: boolean
     driverNIC?: boolean
+    driverDL?: boolean
+    driverEmail?: boolean
     offenseDate?: boolean
     location?: boolean
     categoryId?: boolean
@@ -6453,6 +6647,8 @@ export namespace Prisma {
     driverName?: boolean
     driverPhone?: boolean
     driverNIC?: boolean
+    driverDL?: boolean
+    driverEmail?: boolean
     offenseDate?: boolean
     location?: boolean
     categoryId?: boolean
@@ -6472,6 +6668,8 @@ export namespace Prisma {
     driverName?: boolean
     driverPhone?: boolean
     driverNIC?: boolean
+    driverDL?: boolean
+    driverEmail?: boolean
     offenseDate?: boolean
     location?: boolean
     categoryId?: boolean
@@ -6491,6 +6689,8 @@ export namespace Prisma {
     driverName?: boolean
     driverPhone?: boolean
     driverNIC?: boolean
+    driverDL?: boolean
+    driverEmail?: boolean
     offenseDate?: boolean
     location?: boolean
     categoryId?: boolean
@@ -6501,7 +6701,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type FineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referenceNo" | "vehicleNo" | "driverName" | "driverPhone" | "driverNIC" | "offenseDate" | "location" | "categoryId" | "officerId" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["fine"]>
+  export type FineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referenceNo" | "vehicleNo" | "driverName" | "driverPhone" | "driverNIC" | "driverDL" | "driverEmail" | "offenseDate" | "location" | "categoryId" | "officerId" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["fine"]>
   export type FineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     category?: boolean | FineCategoryDefaultArgs<ExtArgs>
     officer?: boolean | OfficerDefaultArgs<ExtArgs>
@@ -6530,6 +6730,8 @@ export namespace Prisma {
       driverName: string
       driverPhone: string | null
       driverNIC: string | null
+      driverDL: string | null
+      driverEmail: string | null
       offenseDate: Date
       location: string
       categoryId: number
@@ -6970,6 +7172,8 @@ export namespace Prisma {
     readonly driverName: FieldRef<"Fine", 'String'>
     readonly driverPhone: FieldRef<"Fine", 'String'>
     readonly driverNIC: FieldRef<"Fine", 'String'>
+    readonly driverDL: FieldRef<"Fine", 'String'>
+    readonly driverEmail: FieldRef<"Fine", 'String'>
     readonly offenseDate: FieldRef<"Fine", 'DateTime'>
     readonly location: FieldRef<"Fine", 'String'>
     readonly categoryId: FieldRef<"Fine", 'Int'>
@@ -9744,6 +9948,1133 @@ export namespace Prisma {
 
 
   /**
+   * Model SavedCard
+   */
+
+  export type AggregateSavedCard = {
+    _count: SavedCardCountAggregateOutputType | null
+    _avg: SavedCardAvgAggregateOutputType | null
+    _sum: SavedCardSumAggregateOutputType | null
+    _min: SavedCardMinAggregateOutputType | null
+    _max: SavedCardMaxAggregateOutputType | null
+  }
+
+  export type SavedCardAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+  }
+
+  export type SavedCardSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+  }
+
+  export type SavedCardMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    cardholderName: string | null
+    cardNumber: string | null
+    expiry: string | null
+    brand: string | null
+    createdAt: Date | null
+  }
+
+  export type SavedCardMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    cardholderName: string | null
+    cardNumber: string | null
+    expiry: string | null
+    brand: string | null
+    createdAt: Date | null
+  }
+
+  export type SavedCardCountAggregateOutputType = {
+    id: number
+    userId: number
+    cardholderName: number
+    cardNumber: number
+    expiry: number
+    brand: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SavedCardAvgAggregateInputType = {
+    id?: true
+    userId?: true
+  }
+
+  export type SavedCardSumAggregateInputType = {
+    id?: true
+    userId?: true
+  }
+
+  export type SavedCardMinAggregateInputType = {
+    id?: true
+    userId?: true
+    cardholderName?: true
+    cardNumber?: true
+    expiry?: true
+    brand?: true
+    createdAt?: true
+  }
+
+  export type SavedCardMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    cardholderName?: true
+    cardNumber?: true
+    expiry?: true
+    brand?: true
+    createdAt?: true
+  }
+
+  export type SavedCardCountAggregateInputType = {
+    id?: true
+    userId?: true
+    cardholderName?: true
+    cardNumber?: true
+    expiry?: true
+    brand?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SavedCardAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedCard to aggregate.
+     */
+    where?: SavedCardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedCards to fetch.
+     */
+    orderBy?: SavedCardOrderByWithRelationInput | SavedCardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SavedCardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedCards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedCards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SavedCards
+    **/
+    _count?: true | SavedCardCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SavedCardAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SavedCardSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SavedCardMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SavedCardMaxAggregateInputType
+  }
+
+  export type GetSavedCardAggregateType<T extends SavedCardAggregateArgs> = {
+        [P in keyof T & keyof AggregateSavedCard]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSavedCard[P]>
+      : GetScalarType<T[P], AggregateSavedCard[P]>
+  }
+
+
+
+
+  export type SavedCardGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedCardWhereInput
+    orderBy?: SavedCardOrderByWithAggregationInput | SavedCardOrderByWithAggregationInput[]
+    by: SavedCardScalarFieldEnum[] | SavedCardScalarFieldEnum
+    having?: SavedCardScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SavedCardCountAggregateInputType | true
+    _avg?: SavedCardAvgAggregateInputType
+    _sum?: SavedCardSumAggregateInputType
+    _min?: SavedCardMinAggregateInputType
+    _max?: SavedCardMaxAggregateInputType
+  }
+
+  export type SavedCardGroupByOutputType = {
+    id: number
+    userId: number
+    cardholderName: string
+    cardNumber: string
+    expiry: string
+    brand: string
+    createdAt: Date
+    _count: SavedCardCountAggregateOutputType | null
+    _avg: SavedCardAvgAggregateOutputType | null
+    _sum: SavedCardSumAggregateOutputType | null
+    _min: SavedCardMinAggregateOutputType | null
+    _max: SavedCardMaxAggregateOutputType | null
+  }
+
+  type GetSavedCardGroupByPayload<T extends SavedCardGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SavedCardGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SavedCardGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SavedCardGroupByOutputType[P]>
+            : GetScalarType<T[P], SavedCardGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SavedCardSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    cardholderName?: boolean
+    cardNumber?: boolean
+    expiry?: boolean
+    brand?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["savedCard"]>
+
+  export type SavedCardSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    cardholderName?: boolean
+    cardNumber?: boolean
+    expiry?: boolean
+    brand?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["savedCard"]>
+
+  export type SavedCardSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    cardholderName?: boolean
+    cardNumber?: boolean
+    expiry?: boolean
+    brand?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["savedCard"]>
+
+  export type SavedCardSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    cardholderName?: boolean
+    cardNumber?: boolean
+    expiry?: boolean
+    brand?: boolean
+    createdAt?: boolean
+  }
+
+  export type SavedCardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "cardholderName" | "cardNumber" | "expiry" | "brand" | "createdAt", ExtArgs["result"]["savedCard"]>
+  export type SavedCardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SavedCardIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SavedCardIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SavedCardPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SavedCard"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      cardholderName: string
+      cardNumber: string
+      expiry: string
+      brand: string
+      createdAt: Date
+    }, ExtArgs["result"]["savedCard"]>
+    composites: {}
+  }
+
+  type SavedCardGetPayload<S extends boolean | null | undefined | SavedCardDefaultArgs> = $Result.GetResult<Prisma.$SavedCardPayload, S>
+
+  type SavedCardCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SavedCardFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SavedCardCountAggregateInputType | true
+    }
+
+  export interface SavedCardDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SavedCard'], meta: { name: 'SavedCard' } }
+    /**
+     * Find zero or one SavedCard that matches the filter.
+     * @param {SavedCardFindUniqueArgs} args - Arguments to find a SavedCard
+     * @example
+     * // Get one SavedCard
+     * const savedCard = await prisma.savedCard.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SavedCardFindUniqueArgs>(args: SelectSubset<T, SavedCardFindUniqueArgs<ExtArgs>>): Prisma__SavedCardClient<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SavedCard that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SavedCardFindUniqueOrThrowArgs} args - Arguments to find a SavedCard
+     * @example
+     * // Get one SavedCard
+     * const savedCard = await prisma.savedCard.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SavedCardFindUniqueOrThrowArgs>(args: SelectSubset<T, SavedCardFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SavedCardClient<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedCard that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedCardFindFirstArgs} args - Arguments to find a SavedCard
+     * @example
+     * // Get one SavedCard
+     * const savedCard = await prisma.savedCard.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SavedCardFindFirstArgs>(args?: SelectSubset<T, SavedCardFindFirstArgs<ExtArgs>>): Prisma__SavedCardClient<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedCard that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedCardFindFirstOrThrowArgs} args - Arguments to find a SavedCard
+     * @example
+     * // Get one SavedCard
+     * const savedCard = await prisma.savedCard.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SavedCardFindFirstOrThrowArgs>(args?: SelectSubset<T, SavedCardFindFirstOrThrowArgs<ExtArgs>>): Prisma__SavedCardClient<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SavedCards that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedCardFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SavedCards
+     * const savedCards = await prisma.savedCard.findMany()
+     * 
+     * // Get first 10 SavedCards
+     * const savedCards = await prisma.savedCard.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const savedCardWithIdOnly = await prisma.savedCard.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SavedCardFindManyArgs>(args?: SelectSubset<T, SavedCardFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SavedCard.
+     * @param {SavedCardCreateArgs} args - Arguments to create a SavedCard.
+     * @example
+     * // Create one SavedCard
+     * const SavedCard = await prisma.savedCard.create({
+     *   data: {
+     *     // ... data to create a SavedCard
+     *   }
+     * })
+     * 
+     */
+    create<T extends SavedCardCreateArgs>(args: SelectSubset<T, SavedCardCreateArgs<ExtArgs>>): Prisma__SavedCardClient<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SavedCards.
+     * @param {SavedCardCreateManyArgs} args - Arguments to create many SavedCards.
+     * @example
+     * // Create many SavedCards
+     * const savedCard = await prisma.savedCard.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SavedCardCreateManyArgs>(args?: SelectSubset<T, SavedCardCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SavedCards and returns the data saved in the database.
+     * @param {SavedCardCreateManyAndReturnArgs} args - Arguments to create many SavedCards.
+     * @example
+     * // Create many SavedCards
+     * const savedCard = await prisma.savedCard.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SavedCards and only return the `id`
+     * const savedCardWithIdOnly = await prisma.savedCard.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SavedCardCreateManyAndReturnArgs>(args?: SelectSubset<T, SavedCardCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SavedCard.
+     * @param {SavedCardDeleteArgs} args - Arguments to delete one SavedCard.
+     * @example
+     * // Delete one SavedCard
+     * const SavedCard = await prisma.savedCard.delete({
+     *   where: {
+     *     // ... filter to delete one SavedCard
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SavedCardDeleteArgs>(args: SelectSubset<T, SavedCardDeleteArgs<ExtArgs>>): Prisma__SavedCardClient<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SavedCard.
+     * @param {SavedCardUpdateArgs} args - Arguments to update one SavedCard.
+     * @example
+     * // Update one SavedCard
+     * const savedCard = await prisma.savedCard.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SavedCardUpdateArgs>(args: SelectSubset<T, SavedCardUpdateArgs<ExtArgs>>): Prisma__SavedCardClient<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SavedCards.
+     * @param {SavedCardDeleteManyArgs} args - Arguments to filter SavedCards to delete.
+     * @example
+     * // Delete a few SavedCards
+     * const { count } = await prisma.savedCard.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SavedCardDeleteManyArgs>(args?: SelectSubset<T, SavedCardDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedCards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedCardUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SavedCards
+     * const savedCard = await prisma.savedCard.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SavedCardUpdateManyArgs>(args: SelectSubset<T, SavedCardUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedCards and returns the data updated in the database.
+     * @param {SavedCardUpdateManyAndReturnArgs} args - Arguments to update many SavedCards.
+     * @example
+     * // Update many SavedCards
+     * const savedCard = await prisma.savedCard.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SavedCards and only return the `id`
+     * const savedCardWithIdOnly = await prisma.savedCard.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SavedCardUpdateManyAndReturnArgs>(args: SelectSubset<T, SavedCardUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SavedCard.
+     * @param {SavedCardUpsertArgs} args - Arguments to update or create a SavedCard.
+     * @example
+     * // Update or create a SavedCard
+     * const savedCard = await prisma.savedCard.upsert({
+     *   create: {
+     *     // ... data to create a SavedCard
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SavedCard we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SavedCardUpsertArgs>(args: SelectSubset<T, SavedCardUpsertArgs<ExtArgs>>): Prisma__SavedCardClient<$Result.GetResult<Prisma.$SavedCardPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SavedCards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedCardCountArgs} args - Arguments to filter SavedCards to count.
+     * @example
+     * // Count the number of SavedCards
+     * const count = await prisma.savedCard.count({
+     *   where: {
+     *     // ... the filter for the SavedCards we want to count
+     *   }
+     * })
+    **/
+    count<T extends SavedCardCountArgs>(
+      args?: Subset<T, SavedCardCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SavedCardCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SavedCard.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedCardAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SavedCardAggregateArgs>(args: Subset<T, SavedCardAggregateArgs>): Prisma.PrismaPromise<GetSavedCardAggregateType<T>>
+
+    /**
+     * Group by SavedCard.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedCardGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SavedCardGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SavedCardGroupByArgs['orderBy'] }
+        : { orderBy?: SavedCardGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SavedCardGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSavedCardGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SavedCard model
+   */
+  readonly fields: SavedCardFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SavedCard.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SavedCardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SavedCard model
+   */
+  interface SavedCardFieldRefs {
+    readonly id: FieldRef<"SavedCard", 'Int'>
+    readonly userId: FieldRef<"SavedCard", 'Int'>
+    readonly cardholderName: FieldRef<"SavedCard", 'String'>
+    readonly cardNumber: FieldRef<"SavedCard", 'String'>
+    readonly expiry: FieldRef<"SavedCard", 'String'>
+    readonly brand: FieldRef<"SavedCard", 'String'>
+    readonly createdAt: FieldRef<"SavedCard", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SavedCard findUnique
+   */
+  export type SavedCardFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedCard to fetch.
+     */
+    where: SavedCardWhereUniqueInput
+  }
+
+  /**
+   * SavedCard findUniqueOrThrow
+   */
+  export type SavedCardFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedCard to fetch.
+     */
+    where: SavedCardWhereUniqueInput
+  }
+
+  /**
+   * SavedCard findFirst
+   */
+  export type SavedCardFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedCard to fetch.
+     */
+    where?: SavedCardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedCards to fetch.
+     */
+    orderBy?: SavedCardOrderByWithRelationInput | SavedCardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedCards.
+     */
+    cursor?: SavedCardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedCards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedCards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedCards.
+     */
+    distinct?: SavedCardScalarFieldEnum | SavedCardScalarFieldEnum[]
+  }
+
+  /**
+   * SavedCard findFirstOrThrow
+   */
+  export type SavedCardFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedCard to fetch.
+     */
+    where?: SavedCardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedCards to fetch.
+     */
+    orderBy?: SavedCardOrderByWithRelationInput | SavedCardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedCards.
+     */
+    cursor?: SavedCardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedCards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedCards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedCards.
+     */
+    distinct?: SavedCardScalarFieldEnum | SavedCardScalarFieldEnum[]
+  }
+
+  /**
+   * SavedCard findMany
+   */
+  export type SavedCardFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedCards to fetch.
+     */
+    where?: SavedCardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedCards to fetch.
+     */
+    orderBy?: SavedCardOrderByWithRelationInput | SavedCardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SavedCards.
+     */
+    cursor?: SavedCardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedCards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedCards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedCards.
+     */
+    distinct?: SavedCardScalarFieldEnum | SavedCardScalarFieldEnum[]
+  }
+
+  /**
+   * SavedCard create
+   */
+  export type SavedCardCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SavedCard.
+     */
+    data: XOR<SavedCardCreateInput, SavedCardUncheckedCreateInput>
+  }
+
+  /**
+   * SavedCard createMany
+   */
+  export type SavedCardCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SavedCards.
+     */
+    data: SavedCardCreateManyInput | SavedCardCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SavedCard createManyAndReturn
+   */
+  export type SavedCardCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * The data used to create many SavedCards.
+     */
+    data: SavedCardCreateManyInput | SavedCardCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SavedCard update
+   */
+  export type SavedCardUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SavedCard.
+     */
+    data: XOR<SavedCardUpdateInput, SavedCardUncheckedUpdateInput>
+    /**
+     * Choose, which SavedCard to update.
+     */
+    where: SavedCardWhereUniqueInput
+  }
+
+  /**
+   * SavedCard updateMany
+   */
+  export type SavedCardUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SavedCards.
+     */
+    data: XOR<SavedCardUpdateManyMutationInput, SavedCardUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedCards to update
+     */
+    where?: SavedCardWhereInput
+    /**
+     * Limit how many SavedCards to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedCard updateManyAndReturn
+   */
+  export type SavedCardUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * The data used to update SavedCards.
+     */
+    data: XOR<SavedCardUpdateManyMutationInput, SavedCardUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedCards to update
+     */
+    where?: SavedCardWhereInput
+    /**
+     * Limit how many SavedCards to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SavedCard upsert
+   */
+  export type SavedCardUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SavedCard to update in case it exists.
+     */
+    where: SavedCardWhereUniqueInput
+    /**
+     * In case the SavedCard found by the `where` argument doesn't exist, create a new SavedCard with this data.
+     */
+    create: XOR<SavedCardCreateInput, SavedCardUncheckedCreateInput>
+    /**
+     * In case the SavedCard was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SavedCardUpdateInput, SavedCardUncheckedUpdateInput>
+  }
+
+  /**
+   * SavedCard delete
+   */
+  export type SavedCardDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+    /**
+     * Filter which SavedCard to delete.
+     */
+    where: SavedCardWhereUniqueInput
+  }
+
+  /**
+   * SavedCard deleteMany
+   */
+  export type SavedCardDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedCards to delete
+     */
+    where?: SavedCardWhereInput
+    /**
+     * Limit how many SavedCards to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedCard without action
+   */
+  export type SavedCardDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedCard
+     */
+    select?: SavedCardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedCard
+     */
+    omit?: SavedCardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedCardInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -9764,6 +11095,8 @@ export namespace Prisma {
     password: 'password',
     role: 'role',
     phone: 'phone',
+    nic: 'nic',
+    dlNo: 'dlNo',
     districtId: 'districtId',
     isActive: 'isActive',
     refreshToken: 'refreshToken',
@@ -9812,6 +11145,8 @@ export namespace Prisma {
     driverName: 'driverName',
     driverPhone: 'driverPhone',
     driverNIC: 'driverNIC',
+    driverDL: 'driverDL',
+    driverEmail: 'driverEmail',
     offenseDate: 'offenseDate',
     location: 'location',
     categoryId: 'categoryId',
@@ -9852,6 +11187,19 @@ export namespace Prisma {
   };
 
   export type SMSLogScalarFieldEnum = (typeof SMSLogScalarFieldEnum)[keyof typeof SMSLogScalarFieldEnum]
+
+
+  export const SavedCardScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    cardholderName: 'cardholderName',
+    cardNumber: 'cardNumber',
+    expiry: 'expiry',
+    brand: 'brand',
+    createdAt: 'createdAt'
+  };
+
+  export type SavedCardScalarFieldEnum = (typeof SavedCardScalarFieldEnum)[keyof typeof SavedCardScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -9987,6 +11335,8 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
     phone?: StringNullableFilter<"User"> | string | null
+    nic?: StringNullableFilter<"User"> | string | null
+    dlNo?: StringNullableFilter<"User"> | string | null
     districtId?: IntNullableFilter<"User"> | number | null
     isActive?: BoolFilter<"User"> | boolean
     refreshToken?: StringNullableFilter<"User"> | string | null
@@ -9994,6 +11344,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     district?: XOR<DistrictNullableScalarRelationFilter, DistrictWhereInput> | null
     officer?: XOR<OfficerNullableScalarRelationFilter, OfficerWhereInput> | null
+    savedCards?: SavedCardListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -10003,6 +11354,8 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     phone?: SortOrderInput | SortOrder
+    nic?: SortOrderInput | SortOrder
+    dlNo?: SortOrderInput | SortOrder
     districtId?: SortOrderInput | SortOrder
     isActive?: SortOrder
     refreshToken?: SortOrderInput | SortOrder
@@ -10010,11 +11363,14 @@ export namespace Prisma {
     updatedAt?: SortOrder
     district?: DistrictOrderByWithRelationInput
     officer?: OfficerOrderByWithRelationInput
+    savedCards?: SavedCardOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     email?: string
+    nic?: string
+    dlNo?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -10029,7 +11385,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     district?: XOR<DistrictNullableScalarRelationFilter, DistrictWhereInput> | null
     officer?: XOR<OfficerNullableScalarRelationFilter, OfficerWhereInput> | null
-  }, "id" | "email">
+    savedCards?: SavedCardListRelationFilter
+  }, "id" | "email" | "nic" | "dlNo">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -10038,6 +11395,8 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     phone?: SortOrderInput | SortOrder
+    nic?: SortOrderInput | SortOrder
+    dlNo?: SortOrderInput | SortOrder
     districtId?: SortOrderInput | SortOrder
     isActive?: SortOrder
     refreshToken?: SortOrderInput | SortOrder
@@ -10060,6 +11419,8 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+    nic?: StringNullableWithAggregatesFilter<"User"> | string | null
+    dlNo?: StringNullableWithAggregatesFilter<"User"> | string | null
     districtId?: IntNullableWithAggregatesFilter<"User"> | number | null
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
     refreshToken?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -10247,6 +11608,8 @@ export namespace Prisma {
     driverName?: StringFilter<"Fine"> | string
     driverPhone?: StringNullableFilter<"Fine"> | string | null
     driverNIC?: StringNullableFilter<"Fine"> | string | null
+    driverDL?: StringNullableFilter<"Fine"> | string | null
+    driverEmail?: StringNullableFilter<"Fine"> | string | null
     offenseDate?: DateTimeFilter<"Fine"> | Date | string
     location?: StringFilter<"Fine"> | string
     categoryId?: IntFilter<"Fine"> | number
@@ -10267,6 +11630,8 @@ export namespace Prisma {
     driverName?: SortOrder
     driverPhone?: SortOrderInput | SortOrder
     driverNIC?: SortOrderInput | SortOrder
+    driverDL?: SortOrderInput | SortOrder
+    driverEmail?: SortOrderInput | SortOrder
     offenseDate?: SortOrder
     location?: SortOrder
     categoryId?: SortOrder
@@ -10290,6 +11655,8 @@ export namespace Prisma {
     driverName?: StringFilter<"Fine"> | string
     driverPhone?: StringNullableFilter<"Fine"> | string | null
     driverNIC?: StringNullableFilter<"Fine"> | string | null
+    driverDL?: StringNullableFilter<"Fine"> | string | null
+    driverEmail?: StringNullableFilter<"Fine"> | string | null
     offenseDate?: DateTimeFilter<"Fine"> | Date | string
     location?: StringFilter<"Fine"> | string
     categoryId?: IntFilter<"Fine"> | number
@@ -10310,6 +11677,8 @@ export namespace Prisma {
     driverName?: SortOrder
     driverPhone?: SortOrderInput | SortOrder
     driverNIC?: SortOrderInput | SortOrder
+    driverDL?: SortOrderInput | SortOrder
+    driverEmail?: SortOrderInput | SortOrder
     offenseDate?: SortOrder
     location?: SortOrder
     categoryId?: SortOrder
@@ -10335,6 +11704,8 @@ export namespace Prisma {
     driverName?: StringWithAggregatesFilter<"Fine"> | string
     driverPhone?: StringNullableWithAggregatesFilter<"Fine"> | string | null
     driverNIC?: StringNullableWithAggregatesFilter<"Fine"> | string | null
+    driverDL?: StringNullableWithAggregatesFilter<"Fine"> | string | null
+    driverEmail?: StringNullableWithAggregatesFilter<"Fine"> | string | null
     offenseDate?: DateTimeWithAggregatesFilter<"Fine"> | Date | string
     location?: StringWithAggregatesFilter<"Fine"> | string
     categoryId?: IntWithAggregatesFilter<"Fine"> | number
@@ -10497,18 +11868,88 @@ export namespace Prisma {
     sentAt?: DateTimeWithAggregatesFilter<"SMSLog"> | Date | string
   }
 
+  export type SavedCardWhereInput = {
+    AND?: SavedCardWhereInput | SavedCardWhereInput[]
+    OR?: SavedCardWhereInput[]
+    NOT?: SavedCardWhereInput | SavedCardWhereInput[]
+    id?: IntFilter<"SavedCard"> | number
+    userId?: IntFilter<"SavedCard"> | number
+    cardholderName?: StringFilter<"SavedCard"> | string
+    cardNumber?: StringFilter<"SavedCard"> | string
+    expiry?: StringFilter<"SavedCard"> | string
+    brand?: StringFilter<"SavedCard"> | string
+    createdAt?: DateTimeFilter<"SavedCard"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SavedCardOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardholderName?: SortOrder
+    cardNumber?: SortOrder
+    expiry?: SortOrder
+    brand?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SavedCardWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: SavedCardWhereInput | SavedCardWhereInput[]
+    OR?: SavedCardWhereInput[]
+    NOT?: SavedCardWhereInput | SavedCardWhereInput[]
+    userId?: IntFilter<"SavedCard"> | number
+    cardholderName?: StringFilter<"SavedCard"> | string
+    cardNumber?: StringFilter<"SavedCard"> | string
+    expiry?: StringFilter<"SavedCard"> | string
+    brand?: StringFilter<"SavedCard"> | string
+    createdAt?: DateTimeFilter<"SavedCard"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type SavedCardOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardholderName?: SortOrder
+    cardNumber?: SortOrder
+    expiry?: SortOrder
+    brand?: SortOrder
+    createdAt?: SortOrder
+    _count?: SavedCardCountOrderByAggregateInput
+    _avg?: SavedCardAvgOrderByAggregateInput
+    _max?: SavedCardMaxOrderByAggregateInput
+    _min?: SavedCardMinOrderByAggregateInput
+    _sum?: SavedCardSumOrderByAggregateInput
+  }
+
+  export type SavedCardScalarWhereWithAggregatesInput = {
+    AND?: SavedCardScalarWhereWithAggregatesInput | SavedCardScalarWhereWithAggregatesInput[]
+    OR?: SavedCardScalarWhereWithAggregatesInput[]
+    NOT?: SavedCardScalarWhereWithAggregatesInput | SavedCardScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"SavedCard"> | number
+    userId?: IntWithAggregatesFilter<"SavedCard"> | number
+    cardholderName?: StringWithAggregatesFilter<"SavedCard"> | string
+    cardNumber?: StringWithAggregatesFilter<"SavedCard"> | string
+    expiry?: StringWithAggregatesFilter<"SavedCard"> | string
+    brand?: StringWithAggregatesFilter<"SavedCard"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SavedCard"> | Date | string
+  }
+
   export type UserCreateInput = {
     name: string
     email: string
     password: string
     role: $Enums.Role
     phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
     isActive?: boolean
     refreshToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     district?: DistrictCreateNestedOneWithoutUsersInput
     officer?: OfficerCreateNestedOneWithoutUserInput
+    savedCards?: SavedCardCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -10518,12 +11959,15 @@ export namespace Prisma {
     password: string
     role: $Enums.Role
     phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
     districtId?: number | null
     isActive?: boolean
     refreshToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     officer?: OfficerUncheckedCreateNestedOneWithoutUserInput
+    savedCards?: SavedCardUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -10532,12 +11976,15 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     district?: DistrictUpdateOneWithoutUsersNestedInput
     officer?: OfficerUpdateOneWithoutUserNestedInput
+    savedCards?: SavedCardUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -10547,12 +11994,15 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
     districtId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     officer?: OfficerUncheckedUpdateOneWithoutUserNestedInput
+    savedCards?: SavedCardUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -10562,6 +12012,8 @@ export namespace Prisma {
     password: string
     role: $Enums.Role
     phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
     districtId?: number | null
     isActive?: boolean
     refreshToken?: string | null
@@ -10575,6 +12027,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10588,6 +12042,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
     districtId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10760,6 +12216,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     status?: $Enums.FineStatus
@@ -10778,6 +12236,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     categoryId: number
@@ -10795,6 +12255,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumFineStatusFieldUpdateOperationsInput | $Enums.FineStatus
@@ -10813,6 +12275,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     categoryId?: IntFieldUpdateOperationsInput | number
@@ -10831,6 +12295,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     categoryId: number
@@ -10847,6 +12313,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumFineStatusFieldUpdateOperationsInput | $Enums.FineStatus
@@ -10862,6 +12330,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     categoryId?: IntFieldUpdateOperationsInput | number
@@ -11029,6 +12499,72 @@ export namespace Prisma {
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SavedCardCreateInput = {
+    cardholderName: string
+    cardNumber: string
+    expiry: string
+    brand: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSavedCardsInput
+  }
+
+  export type SavedCardUncheckedCreateInput = {
+    id?: number
+    userId: number
+    cardholderName: string
+    cardNumber: string
+    expiry: string
+    brand: string
+    createdAt?: Date | string
+  }
+
+  export type SavedCardUpdateInput = {
+    cardholderName?: StringFieldUpdateOperationsInput | string
+    cardNumber?: StringFieldUpdateOperationsInput | string
+    expiry?: StringFieldUpdateOperationsInput | string
+    brand?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSavedCardsNestedInput
+  }
+
+  export type SavedCardUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    cardholderName?: StringFieldUpdateOperationsInput | string
+    cardNumber?: StringFieldUpdateOperationsInput | string
+    expiry?: StringFieldUpdateOperationsInput | string
+    brand?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedCardCreateManyInput = {
+    id?: number
+    userId: number
+    cardholderName: string
+    cardNumber: string
+    expiry: string
+    brand: string
+    createdAt?: Date | string
+  }
+
+  export type SavedCardUpdateManyMutationInput = {
+    cardholderName?: StringFieldUpdateOperationsInput | string
+    cardNumber?: StringFieldUpdateOperationsInput | string
+    expiry?: StringFieldUpdateOperationsInput | string
+    brand?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedCardUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    cardholderName?: StringFieldUpdateOperationsInput | string
+    cardNumber?: StringFieldUpdateOperationsInput | string
+    expiry?: StringFieldUpdateOperationsInput | string
+    brand?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -11114,9 +12650,19 @@ export namespace Prisma {
     isNot?: OfficerWhereInput | null
   }
 
+  export type SavedCardListRelationFilter = {
+    every?: SavedCardWhereInput
+    some?: SavedCardWhereInput
+    none?: SavedCardWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type SavedCardOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -11126,6 +12672,8 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     phone?: SortOrder
+    nic?: SortOrder
+    dlNo?: SortOrder
     districtId?: SortOrder
     isActive?: SortOrder
     refreshToken?: SortOrder
@@ -11145,6 +12693,8 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     phone?: SortOrder
+    nic?: SortOrder
+    dlNo?: SortOrder
     districtId?: SortOrder
     isActive?: SortOrder
     refreshToken?: SortOrder
@@ -11159,6 +12709,8 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     phone?: SortOrder
+    nic?: SortOrder
+    dlNo?: SortOrder
     districtId?: SortOrder
     isActive?: SortOrder
     refreshToken?: SortOrder
@@ -11463,6 +13015,8 @@ export namespace Prisma {
     driverName?: SortOrder
     driverPhone?: SortOrder
     driverNIC?: SortOrder
+    driverDL?: SortOrder
+    driverEmail?: SortOrder
     offenseDate?: SortOrder
     location?: SortOrder
     categoryId?: SortOrder
@@ -11486,6 +13040,8 @@ export namespace Prisma {
     driverName?: SortOrder
     driverPhone?: SortOrder
     driverNIC?: SortOrder
+    driverDL?: SortOrder
+    driverEmail?: SortOrder
     offenseDate?: SortOrder
     location?: SortOrder
     categoryId?: SortOrder
@@ -11503,6 +13059,8 @@ export namespace Prisma {
     driverName?: SortOrder
     driverPhone?: SortOrder
     driverNIC?: SortOrder
+    driverDL?: SortOrder
+    driverEmail?: SortOrder
     offenseDate?: SortOrder
     location?: SortOrder
     categoryId?: SortOrder
@@ -11640,6 +13198,46 @@ export namespace Prisma {
     paymentId?: SortOrder
   }
 
+  export type SavedCardCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardholderName?: SortOrder
+    cardNumber?: SortOrder
+    expiry?: SortOrder
+    brand?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SavedCardAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type SavedCardMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardholderName?: SortOrder
+    cardNumber?: SortOrder
+    expiry?: SortOrder
+    brand?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SavedCardMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardholderName?: SortOrder
+    cardNumber?: SortOrder
+    expiry?: SortOrder
+    brand?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SavedCardSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+  }
+
   export type DistrictCreateNestedOneWithoutUsersInput = {
     create?: XOR<DistrictCreateWithoutUsersInput, DistrictUncheckedCreateWithoutUsersInput>
     connectOrCreate?: DistrictCreateOrConnectWithoutUsersInput
@@ -11652,10 +13250,24 @@ export namespace Prisma {
     connect?: OfficerWhereUniqueInput
   }
 
+  export type SavedCardCreateNestedManyWithoutUserInput = {
+    create?: XOR<SavedCardCreateWithoutUserInput, SavedCardUncheckedCreateWithoutUserInput> | SavedCardCreateWithoutUserInput[] | SavedCardUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedCardCreateOrConnectWithoutUserInput | SavedCardCreateOrConnectWithoutUserInput[]
+    createMany?: SavedCardCreateManyUserInputEnvelope
+    connect?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
+  }
+
   export type OfficerUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<OfficerCreateWithoutUserInput, OfficerUncheckedCreateWithoutUserInput>
     connectOrCreate?: OfficerCreateOrConnectWithoutUserInput
     connect?: OfficerWhereUniqueInput
+  }
+
+  export type SavedCardUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SavedCardCreateWithoutUserInput, SavedCardUncheckedCreateWithoutUserInput> | SavedCardCreateWithoutUserInput[] | SavedCardUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedCardCreateOrConnectWithoutUserInput | SavedCardCreateOrConnectWithoutUserInput[]
+    createMany?: SavedCardCreateManyUserInputEnvelope
+    connect?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -11698,6 +13310,20 @@ export namespace Prisma {
     update?: XOR<XOR<OfficerUpdateToOneWithWhereWithoutUserInput, OfficerUpdateWithoutUserInput>, OfficerUncheckedUpdateWithoutUserInput>
   }
 
+  export type SavedCardUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SavedCardCreateWithoutUserInput, SavedCardUncheckedCreateWithoutUserInput> | SavedCardCreateWithoutUserInput[] | SavedCardUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedCardCreateOrConnectWithoutUserInput | SavedCardCreateOrConnectWithoutUserInput[]
+    upsert?: SavedCardUpsertWithWhereUniqueWithoutUserInput | SavedCardUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SavedCardCreateManyUserInputEnvelope
+    set?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
+    disconnect?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
+    delete?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
+    connect?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
+    update?: SavedCardUpdateWithWhereUniqueWithoutUserInput | SavedCardUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SavedCardUpdateManyWithWhereWithoutUserInput | SavedCardUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SavedCardScalarWhereInput | SavedCardScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -11722,6 +13348,20 @@ export namespace Prisma {
     delete?: OfficerWhereInput | boolean
     connect?: OfficerWhereUniqueInput
     update?: XOR<XOR<OfficerUpdateToOneWithWhereWithoutUserInput, OfficerUpdateWithoutUserInput>, OfficerUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SavedCardUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SavedCardCreateWithoutUserInput, SavedCardUncheckedCreateWithoutUserInput> | SavedCardCreateWithoutUserInput[] | SavedCardUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedCardCreateOrConnectWithoutUserInput | SavedCardCreateOrConnectWithoutUserInput[]
+    upsert?: SavedCardUpsertWithWhereUniqueWithoutUserInput | SavedCardUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SavedCardCreateManyUserInputEnvelope
+    set?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
+    disconnect?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
+    delete?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
+    connect?: SavedCardWhereUniqueInput | SavedCardWhereUniqueInput[]
+    update?: SavedCardUpdateWithWhereUniqueWithoutUserInput | SavedCardUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SavedCardUpdateManyWithWhereWithoutUserInput | SavedCardUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SavedCardScalarWhereInput | SavedCardScalarWhereInput[]
   }
 
   export type OfficerCreateNestedManyWithoutDistrictInput = {
@@ -12062,6 +13702,20 @@ export namespace Prisma {
     update?: XOR<XOR<PaymentUpdateToOneWithWhereWithoutSmsLogsInput, PaymentUpdateWithoutSmsLogsInput>, PaymentUncheckedUpdateWithoutSmsLogsInput>
   }
 
+  export type UserCreateNestedOneWithoutSavedCardsInput = {
+    create?: XOR<UserCreateWithoutSavedCardsInput, UserUncheckedCreateWithoutSavedCardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSavedCardsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSavedCardsNestedInput = {
+    create?: XOR<UserCreateWithoutSavedCardsInput, UserUncheckedCreateWithoutSavedCardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSavedCardsInput
+    upsert?: UserUpsertWithoutSavedCardsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSavedCardsInput, UserUpdateWithoutSavedCardsInput>, UserUncheckedUpdateWithoutSavedCardsInput>
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -12326,6 +13980,33 @@ export namespace Prisma {
     create: XOR<OfficerCreateWithoutUserInput, OfficerUncheckedCreateWithoutUserInput>
   }
 
+  export type SavedCardCreateWithoutUserInput = {
+    cardholderName: string
+    cardNumber: string
+    expiry: string
+    brand: string
+    createdAt?: Date | string
+  }
+
+  export type SavedCardUncheckedCreateWithoutUserInput = {
+    id?: number
+    cardholderName: string
+    cardNumber: string
+    expiry: string
+    brand: string
+    createdAt?: Date | string
+  }
+
+  export type SavedCardCreateOrConnectWithoutUserInput = {
+    where: SavedCardWhereUniqueInput
+    create: XOR<SavedCardCreateWithoutUserInput, SavedCardUncheckedCreateWithoutUserInput>
+  }
+
+  export type SavedCardCreateManyUserInputEnvelope = {
+    data: SavedCardCreateManyUserInput | SavedCardCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DistrictUpsertWithoutUsersInput = {
     update: XOR<DistrictUpdateWithoutUsersInput, DistrictUncheckedUpdateWithoutUsersInput>
     create: XOR<DistrictCreateWithoutUsersInput, DistrictUncheckedCreateWithoutUsersInput>
@@ -12376,6 +14057,35 @@ export namespace Prisma {
     fines?: FineUncheckedUpdateManyWithoutOfficerNestedInput
   }
 
+  export type SavedCardUpsertWithWhereUniqueWithoutUserInput = {
+    where: SavedCardWhereUniqueInput
+    update: XOR<SavedCardUpdateWithoutUserInput, SavedCardUncheckedUpdateWithoutUserInput>
+    create: XOR<SavedCardCreateWithoutUserInput, SavedCardUncheckedCreateWithoutUserInput>
+  }
+
+  export type SavedCardUpdateWithWhereUniqueWithoutUserInput = {
+    where: SavedCardWhereUniqueInput
+    data: XOR<SavedCardUpdateWithoutUserInput, SavedCardUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SavedCardUpdateManyWithWhereWithoutUserInput = {
+    where: SavedCardScalarWhereInput
+    data: XOR<SavedCardUpdateManyMutationInput, SavedCardUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SavedCardScalarWhereInput = {
+    AND?: SavedCardScalarWhereInput | SavedCardScalarWhereInput[]
+    OR?: SavedCardScalarWhereInput[]
+    NOT?: SavedCardScalarWhereInput | SavedCardScalarWhereInput[]
+    id?: IntFilter<"SavedCard"> | number
+    userId?: IntFilter<"SavedCard"> | number
+    cardholderName?: StringFilter<"SavedCard"> | string
+    cardNumber?: StringFilter<"SavedCard"> | string
+    expiry?: StringFilter<"SavedCard"> | string
+    brand?: StringFilter<"SavedCard"> | string
+    createdAt?: DateTimeFilter<"SavedCard"> | Date | string
+  }
+
   export type OfficerCreateWithoutDistrictInput = {
     badgeNo: string
     phone: string
@@ -12409,11 +14119,14 @@ export namespace Prisma {
     password: string
     role: $Enums.Role
     phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
     isActive?: boolean
     refreshToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     officer?: OfficerCreateNestedOneWithoutUserInput
+    savedCards?: SavedCardCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDistrictInput = {
@@ -12423,11 +14136,14 @@ export namespace Prisma {
     password: string
     role: $Enums.Role
     phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
     isActive?: boolean
     refreshToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     officer?: OfficerUncheckedCreateNestedOneWithoutUserInput
+    savedCards?: SavedCardUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDistrictInput = {
@@ -12494,6 +14210,8 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
     phone?: StringNullableFilter<"User"> | string | null
+    nic?: StringNullableFilter<"User"> | string | null
+    dlNo?: StringNullableFilter<"User"> | string | null
     districtId?: IntNullableFilter<"User"> | number | null
     isActive?: BoolFilter<"User"> | boolean
     refreshToken?: StringNullableFilter<"User"> | string | null
@@ -12507,11 +14225,14 @@ export namespace Prisma {
     password: string
     role: $Enums.Role
     phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
     isActive?: boolean
     refreshToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     district?: DistrictCreateNestedOneWithoutUsersInput
+    savedCards?: SavedCardCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOfficerInput = {
@@ -12521,11 +14242,14 @@ export namespace Prisma {
     password: string
     role: $Enums.Role
     phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
     districtId?: number | null
     isActive?: boolean
     refreshToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    savedCards?: SavedCardUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOfficerInput = {
@@ -12555,6 +14279,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     status?: $Enums.FineStatus
@@ -12572,6 +14298,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     categoryId: number
@@ -12609,11 +14337,14 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     district?: DistrictUpdateOneWithoutUsersNestedInput
+    savedCards?: SavedCardUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOfficerInput = {
@@ -12623,11 +14354,14 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
     districtId?: NullableIntFieldUpdateOperationsInput | number | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    savedCards?: SavedCardUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DistrictUpsertWithoutOfficersInput = {
@@ -12678,6 +14412,8 @@ export namespace Prisma {
     driverName?: StringFilter<"Fine"> | string
     driverPhone?: StringNullableFilter<"Fine"> | string | null
     driverNIC?: StringNullableFilter<"Fine"> | string | null
+    driverDL?: StringNullableFilter<"Fine"> | string | null
+    driverEmail?: StringNullableFilter<"Fine"> | string | null
     offenseDate?: DateTimeFilter<"Fine"> | Date | string
     location?: StringFilter<"Fine"> | string
     categoryId?: IntFilter<"Fine"> | number
@@ -12694,6 +14430,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     status?: $Enums.FineStatus
@@ -12711,6 +14449,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     officerId: number
@@ -12915,6 +14655,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     status?: $Enums.FineStatus
@@ -12932,6 +14674,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     categoryId: number
@@ -12991,6 +14735,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumFineStatusFieldUpdateOperationsInput | $Enums.FineStatus
@@ -13008,6 +14754,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     categoryId?: IntFieldUpdateOperationsInput | number
@@ -13113,6 +14861,123 @@ export namespace Prisma {
     paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserCreateWithoutSavedCardsInput = {
+    name: string
+    email: string
+    password: string
+    role: $Enums.Role
+    phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
+    isActive?: boolean
+    refreshToken?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    district?: DistrictCreateNestedOneWithoutUsersInput
+    officer?: OfficerCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSavedCardsInput = {
+    id?: number
+    name: string
+    email: string
+    password: string
+    role: $Enums.Role
+    phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
+    districtId?: number | null
+    isActive?: boolean
+    refreshToken?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    officer?: OfficerUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSavedCardsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSavedCardsInput, UserUncheckedCreateWithoutSavedCardsInput>
+  }
+
+  export type UserUpsertWithoutSavedCardsInput = {
+    update: XOR<UserUpdateWithoutSavedCardsInput, UserUncheckedUpdateWithoutSavedCardsInput>
+    create: XOR<UserCreateWithoutSavedCardsInput, UserUncheckedCreateWithoutSavedCardsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSavedCardsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSavedCardsInput, UserUncheckedUpdateWithoutSavedCardsInput>
+  }
+
+  export type UserUpdateWithoutSavedCardsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    district?: DistrictUpdateOneWithoutUsersNestedInput
+    officer?: OfficerUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSavedCardsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    officer?: OfficerUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type SavedCardCreateManyUserInput = {
+    id?: number
+    cardholderName: string
+    cardNumber: string
+    expiry: string
+    brand: string
+    createdAt?: Date | string
+  }
+
+  export type SavedCardUpdateWithoutUserInput = {
+    cardholderName?: StringFieldUpdateOperationsInput | string
+    cardNumber?: StringFieldUpdateOperationsInput | string
+    expiry?: StringFieldUpdateOperationsInput | string
+    brand?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedCardUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    cardholderName?: StringFieldUpdateOperationsInput | string
+    cardNumber?: StringFieldUpdateOperationsInput | string
+    expiry?: StringFieldUpdateOperationsInput | string
+    brand?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedCardUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    cardholderName?: StringFieldUpdateOperationsInput | string
+    cardNumber?: StringFieldUpdateOperationsInput | string
+    expiry?: StringFieldUpdateOperationsInput | string
+    brand?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OfficerCreateManyDistrictInput = {
     id?: number
     userId: number
@@ -13128,6 +14993,8 @@ export namespace Prisma {
     password: string
     role: $Enums.Role
     phone?: string | null
+    nic?: string | null
+    dlNo?: string | null
     isActive?: boolean
     refreshToken?: string | null
     createdAt?: Date | string
@@ -13165,11 +15032,14 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     officer?: OfficerUpdateOneWithoutUserNestedInput
+    savedCards?: SavedCardUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDistrictInput = {
@@ -13179,11 +15049,14 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     officer?: OfficerUncheckedUpdateOneWithoutUserNestedInput
+    savedCards?: SavedCardUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutDistrictInput = {
@@ -13193,6 +15066,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    dlNo?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13206,6 +15081,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     categoryId: number
@@ -13221,6 +15098,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumFineStatusFieldUpdateOperationsInput | $Enums.FineStatus
@@ -13238,6 +15117,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     categoryId?: IntFieldUpdateOperationsInput | number
@@ -13255,6 +15136,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     categoryId?: IntFieldUpdateOperationsInput | number
@@ -13271,6 +15154,8 @@ export namespace Prisma {
     driverName: string
     driverPhone?: string | null
     driverNIC?: string | null
+    driverDL?: string | null
+    driverEmail?: string | null
     offenseDate: Date | string
     location: string
     officerId: number
@@ -13286,6 +15171,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumFineStatusFieldUpdateOperationsInput | $Enums.FineStatus
@@ -13303,6 +15190,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     officerId?: IntFieldUpdateOperationsInput | number
@@ -13320,6 +15209,8 @@ export namespace Prisma {
     driverName?: StringFieldUpdateOperationsInput | string
     driverPhone?: NullableStringFieldUpdateOperationsInput | string | null
     driverNIC?: NullableStringFieldUpdateOperationsInput | string | null
+    driverDL?: NullableStringFieldUpdateOperationsInput | string | null
+    driverEmail?: NullableStringFieldUpdateOperationsInput | string | null
     offenseDate?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
     officerId?: IntFieldUpdateOperationsInput | number

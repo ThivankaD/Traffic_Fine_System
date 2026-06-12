@@ -24,6 +24,8 @@ router.post(
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters"),
     body("phone").optional().isString().withMessage("Phone must be a string"),
+    body("nic").trim().notEmpty().withMessage("NIC is required"),
+    body("dlNo").trim().notEmpty().withMessage("Driving License is required"),
   ],
   validate,
   signup,

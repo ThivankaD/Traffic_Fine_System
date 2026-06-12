@@ -28,6 +28,8 @@ model User {
   password  String
   role      Role
   phone     String?
+  nic       String?  @unique
+  dlNo      String?  @unique
   districtId Int?
   isActive  Boolean  @default(true)
   refreshToken String?
@@ -73,6 +75,8 @@ model Fine {
   driverName  String
   driverPhone String?
   driverNIC   String?
+  driverDL    String?
+  driverEmail String?
   offenseDate DateTime
   location    String
   categoryId  Int

@@ -102,6 +102,25 @@ export default function FinesScreen({ user, token, initialSearchedFine, onClearI
     }
   };
 
+  const getFilteredFines = () => {
+    if (!searchQuery.trim()) {
+      return finesList;
+    }
+    const query = searchQuery.toLowerCase().trim();
+    return finesList.filter((fine) => {
+      const vehicleNo = fine.vehicleNo?.toLowerCase() || "";
+      const referenceNo = fine.referenceNo?.toLowerCase() || "";
+      const driverNIC = fine.driverNIC?.toLowerCase() || "";
+      const driverName = fine.driverName?.toLowerCase() || "";
+      return (
+        vehicleNo.includes(query) ||
+        referenceNo.includes(query) ||
+        driverNIC.includes(query) ||
+        driverName.includes(query)
+      );
+    });
+  };
+
   const fetchSavedCardsForPayment = async () => {
     setLoadingSavedCards(true);
     try {

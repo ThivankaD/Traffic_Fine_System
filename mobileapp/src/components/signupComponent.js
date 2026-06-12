@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { API_BASE_URL } from "../config";
 import { COLORS, COMMON_STYLES } from "../theme";
@@ -15,11 +16,13 @@ export default function SignupComponent({ onLoginPress }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [nic, setNic] = useState("");
+  const [dlNo, setDlNo] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !nic || !dlNo) {
       Alert.alert("Error", "Please fill all required fields");
       return;
     }
@@ -35,6 +38,8 @@ export default function SignupComponent({ onLoginPress }) {
           email: email.trim(),
           password,
           phone: phone.trim() || undefined,
+          nic: nic.trim().toUpperCase(),
+          dlNo: dlNo.trim().toUpperCase(),
         }),
       });
 
@@ -61,7 +66,7 @@ export default function SignupComponent({ onLoginPress }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer}>
       <View style={styles.card}>
         <Text style={styles.title}>Traffic Fine System</Text>
         <Text style={styles.subtitle}>Create your motorist account</Text>
@@ -99,6 +104,28 @@ export default function SignupComponent({ onLoginPress }) {
           disabled={loading}
         />
 
+        <Text style={styles.label}>NIC Number *</Text>
+        <TextInput
+          style={COMMON_STYLES.input}
+          placeholder="e.g. 199912345V"
+          placeholderTextColor={COLORS.textLight}
+          value={nic}
+          onChangeText={setNic}
+          autoCapitalize="characters"
+          disabled={loading}
+        />
+
+        <Text style={styles.label}>Driving License Number *</Text>
+        <TextInput
+          style={COMMON_STYLES.input}
+          placeholder="e.g. B1234567"
+          placeholderTextColor={COLORS.textLight}
+          value={dlNo}
+          onChangeText={setDlNo}
+          autoCapitalize="characters"
+          disabled={loading}
+        />
+
         <Text style={styles.label}>Password *</Text>
         <TextInput
           style={COMMON_STYLES.input}
@@ -128,7 +155,7 @@ export default function SignupComponent({ onLoginPress }) {
           Already have an account? <Text style={styles.loginLink}>Login here</Text>
         </Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -136,8 +163,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    justifyContent: "center",
+  },
+  scrollContainer: {
+    paddingVertical: 30,
     paddingHorizontal: 20,
+    justifyContent: "center",
   },
   card: {
     ...COMMON_STYLES.card,

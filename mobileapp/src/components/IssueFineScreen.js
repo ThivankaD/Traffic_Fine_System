@@ -19,10 +19,7 @@ import { API_BASE_URL } from "../config";
 
 export default function IssueFineScreen({ token, onFineIssued }) {
   const [vehicleNo, setVehicleNo] = useState("");
-  const [driverName, setDriverName] = useState("");
-  const [driverPhone, setDriverPhone] = useState("");
-  const [driverNIC, setDriverNIC] = useState("");
-  const [location, setLocation] = useState("");
+  const [driverIdentifier, setDriverIdentifier] = useState("");
   const [notes, setNotes] = useState("");
   
   // Categories Picker
@@ -55,7 +52,7 @@ export default function IssueFineScreen({ token, onFineIssued }) {
   };
 
   const handleIssueFine = async () => {
-    if (!vehicleNo.trim() || !driverName.trim() || !location.trim() || !selectedCategory) {
+    if (!vehicleNo.trim() || !driverIdentifier.trim() || !selectedCategory || !notes.trim()) {
       Alert.alert("Validation Error", "Please fill all required (*) fields.");
       return;
     }
@@ -70,13 +67,9 @@ export default function IssueFineScreen({ token, onFineIssued }) {
         },
         body: JSON.stringify({
           vehicleNo: vehicleNo.trim().toUpperCase(),
-          driverName: driverName.trim(),
-          driverPhone: driverPhone.trim() || undefined,
-          driverNIC: driverNIC.trim() || undefined,
-          offenseDate: new Date().toISOString(),
-          location: location.trim(),
+          driverIdentifier: driverIdentifier.trim().toUpperCase(),
           categoryId: selectedCategory.id,
-          notes: notes.trim() || undefined,
+          notes: notes.trim(),
         }),
       });
 
@@ -87,10 +80,7 @@ export default function IssueFineScreen({ token, onFineIssued }) {
         
         // Reset form
         setVehicleNo("");
-        setDriverName("");
-        setDriverPhone("");
-        setDriverNIC("");
-        setLocation("");
+        setDriverIdentifier("");
         setNotes("");
         setSelectedCategory(null);
 
@@ -148,49 +138,15 @@ export default function IssueFineScreen({ token, onFineIssued }) {
             disabled={submitting}
           />
 
-          {/* Driver Name */}
-          <Text style={styles.label}>Driver Full Name *</Text>
+          {/* Driver NIC or License */}
+          <Text style={styles.label}>Driver NIC or License Number *</Text>
           <TextInput
             style={COMMON_STYLES.input}
-            placeholder="Enter driver's name"
+            placeholder="e.g. 199912345V / B1234567"
             placeholderTextColor={COLORS.textLight}
-            value={driverName}
-            onChangeText={setDriverName}
-            disabled={submitting}
-          />
-
-          {/* Driver NIC */}
-          <Text style={styles.label}>Driver NIC Number</Text>
-          <TextInput
-            style={COMMON_STYLES.input}
-            placeholder="e.g. 199512345V / 199501201234"
-            placeholderTextColor={COLORS.textLight}
-            value={driverNIC}
-            onChangeText={setDriverNIC}
+            value={driverIdentifier}
+            onChangeText={setDriverIdentifier}
             autoCapitalize="characters"
-            disabled={submitting}
-          />
-
-          {/* Driver Phone */}
-          <Text style={styles.label}>Driver Phone Number</Text>
-          <TextInput
-            style={COMMON_STYLES.input}
-            placeholder="e.g. +94771234567"
-            placeholderTextColor={COLORS.textLight}
-            value={driverPhone}
-            onChangeText={setDriverPhone}
-            keyboardType="phone-pad"
-            disabled={submitting}
-          />
-
-          {/* Location */}
-          <Text style={styles.label}>Location of Offense *</Text>
-          <TextInput
-            style={COMMON_STYLES.input}
-            placeholder="e.g. Galle Road, Colombo 03"
-            placeholderTextColor={COLORS.textLight}
-            value={location}
-            onChangeText={setLocation}
             disabled={submitting}
           />
 
@@ -220,7 +176,7 @@ export default function IssueFineScreen({ token, onFineIssued }) {
           </TouchableOpacity>
 
           {/* Notes */}
-          <Text style={styles.label}>Additional Officer Notes</Text>
+          <Text style={styles.label}>Additional Officer Notes *</Text>
           <TextInput
             style={[COMMON_STYLES.input, styles.notesInput]}
             placeholder="Enter context, road conditions, or details..."

@@ -23,6 +23,8 @@ const buildProfile = (user) => ({
   email: user.email,
   role: user.role,
   phone: user.phone,
+  nic: user.nic || null,
+  dlNo: user.dlNo || null,
   districtId: user.districtId,
   isActive: user.isActive,
   createdAt: user.createdAt,
@@ -52,7 +54,17 @@ const buildAuthResponse = async (user, statusCode, res) => {
 
 const signup = async (req, res, next) => {
   try {
-    const { name, email, password, phone = null } = req.body;
+    const { name, email, password, phone = null, nic, dlNo } = req.body;
+
+    const existingNic = await prisma.user.findUnique({ where: { nic } });
+    if (existingNic) {
+      return res.status(400).json({ success: false, message: "NIC already registered." });
+    }
+
+    const existingDl = await prisma.user.findUnique({ where: { dlNo } });
+    if (existingDl) {
+      return res.status(400).json({ success: false, message: "Driving License already registered." });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -63,6 +75,8 @@ const signup = async (req, res, next) => {
         password: hashedPassword,
         role: "USER",
         phone,
+        nic,
+        dlNo,
       },
     });
 

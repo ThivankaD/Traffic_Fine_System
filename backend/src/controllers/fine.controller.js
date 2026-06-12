@@ -10,10 +10,7 @@ const createFine = async (req, res, next) => {
   try {
     const {
       vehicleNo,
-      driverName,
-      driverPhone,
-      driverNIC,
-      offenseDate,
+      driverIdentifier,
       location,
       categoryId,
       notes,
@@ -21,11 +18,29 @@ const createFine = async (req, res, next) => {
 
     const officer = await prisma.officer.findUnique({
       where: { userId: req.user.id },
+      include: { district: true },
     });
     if (!officer) {
       return res
         .status(403)
         .json({ success: false, message: "Officer profile not found." });
+    }
+
+    const motorist = await prisma.user.findFirst({
+      where: {
+        role: "USER",
+        OR: [
+          { nic: driverIdentifier },
+          { dlNo: driverIdentifier }
+        ]
+      }
+    });
+
+    if (!motorist) {
+      return res.status(404).json({
+        success: false,
+        message: "Motorist not found with the provided NIC or Driving License."
+      });
     }
 
     const category = await prisma.fineCategory.findFirst({
@@ -38,15 +53,19 @@ const createFine = async (req, res, next) => {
         .json({ success: false, message: "Fine category not found." });
     }
 
+    const fineLocation = location || officer.district?.name || "Colombo";
+
     const fine = await prisma.fine.create({
       data: {
         referenceNo: generateReferenceNo(),
         vehicleNo: vehicleNo.toUpperCase(),
-        driverName,
-        driverPhone: driverPhone || null,
-        driverNIC: driverNIC || null,
-        offenseDate: new Date(offenseDate),
-        location,
+        driverName: motorist.name,
+        driverPhone: motorist.phone || null,
+        driverNIC: motorist.nic || null,
+        driverDL: motorist.dlNo || null,
+        driverEmail: motorist.email || null,
+        offenseDate: new Date(),
+        location: fineLocation,
         categoryId: Number(categoryId),
         officerId: officer.id,
         notes: notes || null,
@@ -248,24 +267,32 @@ const getMotoristFines = async (req, res, next) => {
     );
     const skip = (page - 1) * limit;
 
-    const userPhone = req.user.phone;
-    if (!userPhone) {
-      return res.status(200).json({
-        success: true,
-        data: [],
-        pagination: { total: 0, page, limit, totalPages: 0 }
-      });
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+    });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found." });
     }
+
+    const where = {
+      OR: [
+        ...(user.phone ? [{ driverPhone: user.phone }] : []),
+        { driverEmail: user.email },
+        ...(user.nic ? [{ driverNIC: user.nic }] : []),
+        ...(user.dlNo ? [{ driverDL: user.dlNo }] : []),
+      ],
+    };
 
     const [fines, total] = await Promise.all([
       prisma.fine.findMany({
-        where: { driverPhone: userPhone },
+        where,
         skip,
         take: limit,
         orderBy: { createdAt: "desc" },
         include: { category: true, payment: true },
       }),
-      prisma.fine.count({ where: { driverPhone: userPhone } }),
+      prisma.fine.count({ where }),
     ]);
 
     return res.status(200).json({

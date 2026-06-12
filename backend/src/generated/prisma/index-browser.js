@@ -127,6 +127,8 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   phone: 'phone',
+  nic: 'nic',
+  dlNo: 'dlNo',
   districtId: 'districtId',
   isActive: 'isActive',
   refreshToken: 'refreshToken',
@@ -163,6 +165,8 @@ exports.Prisma.FineScalarFieldEnum = {
   driverName: 'driverName',
   driverPhone: 'driverPhone',
   driverNIC: 'driverNIC',
+  driverDL: 'driverDL',
+  driverEmail: 'driverEmail',
   offenseDate: 'offenseDate',
   location: 'location',
   categoryId: 'categoryId',
@@ -194,6 +198,16 @@ exports.Prisma.SMSLogScalarFieldEnum = {
   status: 'status',
   sid: 'sid',
   sentAt: 'sentAt'
+};
+
+exports.Prisma.SavedCardScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  cardholderName: 'cardholderName',
+  cardNumber: 'cardNumber',
+  expiry: 'expiry',
+  brand: 'brand',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -229,7 +243,8 @@ exports.Prisma.ModelName = {
   FineCategory: 'FineCategory',
   Fine: 'Fine',
   Payment: 'Payment',
-  SMSLog: 'SMSLog'
+  SMSLog: 'SMSLog',
+  SavedCard: 'SavedCard'
 };
 
 /**
