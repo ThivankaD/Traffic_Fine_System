@@ -136,7 +136,7 @@ export default function Officers() {
       <section className="officers-hero card">
         <div className="officers-hero-copy">
           <span className="dashboard-eyebrow officers-eyebrow">Officer administration</span>
-          <h2>Manage officer accounts with a clearer, modern workflow.</h2>
+          <h2>Manage officer accounts </h2>
           <p>
             Review the current officer directory, search across records, and register new officers in
             a calmer interface that matches the rest of the admin system.
