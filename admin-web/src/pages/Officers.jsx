@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { getDistricts, getUsers, registerOfficer } from "../api/client.js";
+import { formatNumber } from "../utils/format.js";
 
 export default function Officers() {
   const [officers, setOfficers] = useState([]);
@@ -8,6 +9,8 @@ export default function Officers() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [query, setQuery] = useState("");
+  const [districtFilter, setDistrictFilter] = useState("ALL");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -88,33 +91,126 @@ export default function Officers() {
     [officers.length],
   );
 
+  const normalizedQuery = query.trim().toLowerCase();
+
+  const districtNameById = useMemo(() => {
+    const map = new Map();
+    districts.forEach((district) => {
+      map.set(String(district.id), district.name);
+    });
+    return map;
+  }, [districts]);
+
+  const filteredOfficers = useMemo(() => {
+    return officers.filter((officer) => {
+      const officerDistrictId = String(officer.officer?.districtId || officer.districtId || "");
+      const officerDistrictName =
+        officer.officer?.district?.name || officer.district?.name || districtNameById.get(officerDistrictId) || "";
+
+      const matchesQuery =
+        !normalizedQuery ||
+        [officer.name, officer.email, officer.officer?.badgeNo, officer.officer?.phone, officerDistrictName]
+          .filter(Boolean)
+          .some((value) => String(value).toLowerCase().includes(normalizedQuery));
+
+      const matchesDistrict = districtFilter === "ALL" || officerDistrictId === districtFilter;
+
+      return matchesQuery && matchesDistrict;
+    });
+  }, [districtFilter, districtNameById, normalizedQuery, officers]);
+
+  const officerStats = useMemo(
+    () => ({
+      total: officers.length,
+      districts: new Set(
+        officers.map((officer) => String(officer.officer?.districtId || officer.districtId || "")).filter(Boolean),
+      ).size,
+      assigned: officers.filter((officer) => Boolean(officer.officer?.district || officer.district)).length,
+      filtered: filteredOfficers.length,
+    }),
+    [filteredOfficers.length, officers],
+  );
+
   return (
-    <div>
-      <div className="page-header">
-        <div>
-          <h2>Police Officers Management</h2>
-          <p className="topbar-subtitle">Create and review admin-managed officer accounts</p>
+    <div className="officers-page">
+      <section className="officers-hero card">
+        <div className="officers-hero-copy">
+          <span className="dashboard-eyebrow officers-eyebrow">Officer administration</span>
+          <h2>Manage officer accounts with a clearer, modern workflow.</h2>
+          <p>
+            Review the current officer directory, search across records, and register new officers in
+            a calmer interface that matches the rest of the admin system.
+          </p>
         </div>
-        <span className="badge">{officerCountLabel}</span>
-      </div>
+
+        <div className="officers-hero-stats">
+          <div className="officers-mini-stat">
+            <span>Total officers</span>
+            <strong>{loading ? "—" : formatNumber(officerStats.total)}</strong>
+          </div>
+          <div className="officers-mini-stat">
+            <span>Districts covered</span>
+            <strong>{loading ? "—" : formatNumber(officerStats.districts)}</strong>
+          </div>
+          <div className="officers-mini-stat">
+            <span>Assigned records</span>
+            <strong>{loading ? "—" : formatNumber(officerStats.assigned)}</strong>
+          </div>
+          <div className="officers-mini-stat">
+            <span>Visible results</span>
+            <strong>{loading ? "—" : formatNumber(officerStats.filtered)}</strong>
+          </div>
+        </div>
+      </section>
+
+      <section className="officers-toolbar card">
+        <label className="officers-search">
+          <span>Search</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Name, email, badge, phone, or district"
+          />
+        </label>
+
+        <label className="officers-filter">
+          <span>District</span>
+          <select value={districtFilter} onChange={(event) => setDistrictFilter(event.target.value)}>
+            <option value="ALL">All districts</option>
+            {districts.map((district) => (
+              <option key={district.id} value={district.id}>
+                {district.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <div className="officers-toolbar-note">
+          {loading ? "Loading officers from the backend..." : `${formatNumber(filteredOfficers.length)} records shown`}
+        </div>
+      </section>
 
       {error ? <div className="alert alert-error">{error}</div> : null}
       {success ? <div className="success-message">{success}</div> : null}
 
-      <div className="officers-layout">
-        <section className="card">
-          <h3>Officers Directory</h3>
+      <section className="officers-grid">
+        <article className="card officers-directory-card">
+          <div className="section-header">
+            <div>
+              <h3>Officers Directory</h3>
+              <p className="section-subtitle">The current officer roster with district and contact details.</p>
+            </div>
+            <span className="badge badge-neutral">{officerCountLabel}</span>
+          </div>
+
           {loading ? (
-            <div style={{ padding: "20px", textAlign: "center", color: "#64748b" }}>
-              Loading officers directory...
-            </div>
-          ) : officers.length === 0 ? (
-            <div style={{ padding: "20px", textAlign: "center", color: "#64748b" }}>
-              No registered officers found in the system.
-            </div>
+            <div className="table-empty">Loading officers directory...</div>
+          ) : filteredOfficers.length === 0 ? (
+            <div className="table-empty">No officers found for the current filters.</div>
           ) : (
-            <div style={{ overflowX: "auto" }}>
-              <table className="table">
+            <div className="table-wrap">
+              <table className="table officers-table">
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -125,28 +221,37 @@ export default function Officers() {
                   </tr>
                 </thead>
                 <tbody>
-                  {officers.map((officer) => (
-                    <tr key={officer.id}>
-                      <td style={{ fontWeight: "600" }}>{officer.name}</td>
-                      <td>
-                        <span className="badge">
-                          {officer.officer?.badgeNo || "N/A"}
-                        </span>
-                      </td>
-                      <td>{officer.officer?.district?.name || officer.district?.name || "N/A"}</td>
-                      <td>{officer.email}</td>
-                      <td>{officer.officer?.phone || officer.phone || "N/A"}</td>
-                    </tr>
-                  ))}
+                  {filteredOfficers.map((officer) => {
+                    const officerDistrictName =
+                      officer.officer?.district?.name || officer.district?.name || "N/A";
+
+                    return (
+                      <tr key={officer.id}>
+                        <td className="table-strong">{officer.name}</td>
+                        <td>
+                          <span className="badge">{officer.officer?.badgeNo || "N/A"}</span>
+                        </td>
+                        <td>{officerDistrictName}</td>
+                        <td>{officer.email}</td>
+                        <td>{officer.officer?.phone || officer.phone || "N/A"}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           )}
-        </section>
+        </article>
 
-        <section className="card">
-          <h3>Register New Officer</h3>
-          <form onSubmit={handleRegister} style={{ marginTop: "16px" }}>
+        <aside className="card officers-form-card">
+          <div className="section-header">
+            <div>
+              <h3>Register New Officer</h3>
+              <p className="section-subtitle">Add a new admin-managed officer account.</p>
+            </div>
+          </div>
+
+          <form onSubmit={handleRegister} className="officers-form">
             <div className="form-group">
               <label className="form-label-light" htmlFor="name">
                 Full Name
@@ -253,8 +358,16 @@ export default function Officers() {
               {submitting ? "Registering..." : "Register Officer"}
             </button>
           </form>
-        </section>
-      </div>
+
+          <div className="dashboard-callout officers-callout">
+            <p className="dashboard-callout-label">Admin note</p>
+            <h4>Keep badge numbers unique and align each officer to one district.</h4>
+            <p>
+              The list above updates from the backend after registration, so no manual refresh logic is needed.
+            </p>
+          </div>
+        </aside>
+      </section>
     </div>
   );
 }
