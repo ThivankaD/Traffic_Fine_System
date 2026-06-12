@@ -21,10 +21,81 @@ export default function SignupComponent({ onLoginPress }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const validateNIC = (val) => {
+    if (!val) return false;
+    const cleaned = val.trim().toUpperCase();
+    if (/^\d{9}[VX]$/.test(cleaned)) {
+      const day = parseInt(cleaned.substring(2, 5), 10);
+      return (day >= 1 && day <= 365) || (day >= 501 && day <= 865);
+    }
+    if (/^\d{12}$/.test(cleaned)) {
+      const day = parseInt(cleaned.substring(4, 7), 10);
+      return (day >= 1 && day <= 365) || (day >= 501 && day <= 865);
+    }
+    return false;
+  };
+
+  const normalizeAndValidatePhone = (val) => {
+    if (!val) return null;
+    const clean = val.replace(/[^0-9+]/g, "").trim();
+    let normalized = clean;
+    if (clean.startsWith("+94") && clean.length === 12) {
+      normalized = clean;
+    } else if (clean.startsWith("94") && clean.length === 11) {
+      normalized = "+" + clean;
+    } else if (clean.startsWith("0") && clean.length === 10) {
+      normalized = "+94" + clean.substring(1);
+    } else if (clean.length === 9) {
+      normalized = "+94" + clean;
+    }
+    if (/^\+94\d{9}$/.test(normalized)) {
+      return normalized;
+    }
+    return null;
+  };
+
+  const validateDL = (val) => {
+    if (!val) return false;
+    const cleaned = val.trim().toUpperCase();
+    if (/^\d{9,10}[A-Z]$/.test(cleaned)) return true;
+    if (/^[A-Z]\d{7,8}$/.test(cleaned)) return true;
+    return false;
+  };
+
   const handleSignup = async () => {
-    if (!name || !email || !password || !nic || !dlNo) {
+    if (!name.trim() || !email.trim() || !password || !nic.trim() || !dlNo.trim()) {
       Alert.alert("Error", "Please fill all required fields");
       return;
+    }
+
+    const normalizedNic = nic.trim().toUpperCase();
+    if (!validateNIC(normalizedNic)) {
+      Alert.alert(
+        "Validation Error",
+        "Invalid NIC format. Must be old format (9 digits + V/X) or new format (12 digits) with valid birth day."
+      );
+      return;
+    }
+
+    const normalizedDl = dlNo.trim().toUpperCase();
+    if (!validateDL(normalizedDl)) {
+      Alert.alert(
+        "Validation Error",
+        "Invalid Driving License format. Must be 9-10 digits followed by a letter, or a letter followed by 7-8 digits."
+      );
+      return;
+    }
+
+    let normalizedPhone = undefined;
+    if (phone.trim()) {
+      normalizedPhone = normalizeAndValidatePhone(phone);
+      if (!normalizedPhone) {
+        Alert.alert(
+          "Validation Error",
+          "Invalid mobile number format. Please check and try again."
+        );
+        return;
+      }
     }
 
     setLoading(true);
@@ -37,9 +108,9 @@ export default function SignupComponent({ onLoginPress }) {
           name: name.trim(),
           email: email.trim(),
           password,
-          phone: phone.trim() || undefined,
-          nic: nic.trim().toUpperCase(),
-          dlNo: dlNo.trim().toUpperCase(),
+          phone: normalizedPhone,
+          nic: normalizedNic,
+          dlNo: normalizedDl,
         }),
       });
 

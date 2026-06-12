@@ -2,6 +2,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const prisma = require("../config/db");
 const env = require("../config/env");
+const {
+  validateNIC,
+  normalizeAndValidatePhone,
+  validateDL,
+} = require("../utils/validation");
 
 const signAccessToken = (user) =>
   jwt.sign(
@@ -56,12 +61,41 @@ const signup = async (req, res, next) => {
   try {
     const { name, email, password, phone = null, nic, dlNo } = req.body;
 
-    const existingNic = await prisma.user.findUnique({ where: { nic } });
+    const normalizedNic = nic ? nic.trim().toUpperCase() : "";
+    const normalizedDl = dlNo ? dlNo.trim().toUpperCase() : "";
+
+    if (!validateNIC(normalizedNic)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid NIC format. Must be old format (9 digits + V/X) or new format (12 digits) with valid birth day.",
+      });
+    }
+
+    if (!validateDL(normalizedDl)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Driving License format. Must be 9-10 digits followed by a letter, or a letter followed by 7-8 digits.",
+      });
+    }
+
+    const normalizedPhone = normalizeAndValidatePhone(phone);
+    if (!normalizedPhone) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid mobile number format. Please provide a valid Sri Lankan phone number.",
+      });
+    }
+
+    const existingNic = await prisma.user.findFirst({
+      where: { nic: { equals: normalizedNic, mode: "insensitive" } },
+    });
     if (existingNic) {
       return res.status(400).json({ success: false, message: "NIC already registered." });
     }
 
-    const existingDl = await prisma.user.findUnique({ where: { dlNo } });
+    const existingDl = await prisma.user.findFirst({
+      where: { dlNo: { equals: normalizedDl, mode: "insensitive" } },
+    });
     if (existingDl) {
       return res.status(400).json({ success: false, message: "Driving License already registered." });
     }
@@ -74,9 +108,9 @@ const signup = async (req, res, next) => {
         email,
         password: hashedPassword,
         role: "USER",
-        phone,
-        nic,
-        dlNo,
+        phone: normalizedPhone,
+        nic: normalizedNic,
+        dlNo: normalizedDl,
       },
     });
 

@@ -56,10 +56,6 @@ export default function ProfileScreen({ user, token, onLogout }) {
       Alert.alert("Error", "Please fill all fields");
       return;
     }
-    if (cardNumber.length < 16) {
-      Alert.alert("Error", "Please enter a valid 16-digit card number");
-      return;
-    }
 
     setAddingCard(true);
     try {
@@ -330,20 +326,7 @@ export default function ProfileScreen({ user, token, onLogout }) {
         </>
       )}
 
-      {/* Brand theme swatches */}
-      <Text style={styles.sectionTitle}>App Theme Preset</Text>
-      <View style={[COMMON_STYLES.card, styles.themePaletteCard]}>
-        <Text style={styles.themePaletteTitle}>Integrated Styling Theme</Text>
-        <View style={styles.swatchRow}>
-          <View style={[styles.swatch, { backgroundColor: COLORS.primary }]} />
-          <View style={[styles.swatch, { backgroundColor: COLORS.accent }]} />
-          <View style={[styles.swatch, { backgroundColor: COLORS.success }]} />
-          <View style={[styles.swatch, { backgroundColor: COLORS.warning }]} />
-          <View style={[styles.swatch, { backgroundColor: COLORS.danger }]} />
-          <View style={[styles.swatch, { backgroundColor: COLORS.background }]} />
-        </View>
-        <Text style={styles.themePaletteSub}>Color theme matched according to signup/login branding.</Text>
-      </View>
+
 
       {/* Logout button */}
       <TouchableOpacity style={styles.logoutBtn} onPress={onLogout}>
@@ -423,31 +406,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginTop: 2,
   },
-  themePaletteCard: {
-    padding: 16,
-  },
-  themePaletteTitle: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: COLORS.textPrimary,
-    marginBottom: 10,
-  },
-  swatchRow: {
-    flexDirection: "row",
-    marginBottom: 8,
-  },
-  swatch: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    marginRight: 8,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  themePaletteSub: {
-    fontSize: 12,
-    color: COLORS.textSecondary,
-  },
+
   logoutBtn: {
     ...COMMON_STYLES.button,
     backgroundColor: COLORS.danger,

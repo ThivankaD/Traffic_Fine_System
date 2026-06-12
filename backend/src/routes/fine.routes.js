@@ -8,6 +8,7 @@ const {
   getMyFines,
   cancelFine,
   getMotoristFines,
+  getDriverDetailsForLookup,
 } = require("../controllers/fine.controller");
 const { verifyToken, requireRole } = require("../middleware/auth");
 const validate = require("../middleware/validate");
@@ -35,6 +36,15 @@ router.get(
   ],
   validate,
   getMyFines,
+);
+
+router.get(
+  "/driver-lookup/:identifier",
+  verifyToken,
+  requireRole("OFFICER"),
+  [param("identifier").trim().notEmpty().withMessage("identifier is required")],
+  validate,
+  getDriverDetailsForLookup,
 );
 
 router.get(

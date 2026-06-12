@@ -21,6 +21,21 @@ import { API_BASE_URL } from "../config";
 export default function FinesScreen({ user, token, initialSearchedFine, onClearInitialFine }) {
   const isOfficer = user?.role === "OFFICER" || user?.role === "ADMIN";
   
+  const showAlert = (title, message, buttons) => {
+    console.log(`Alert [${title}]: ${message}`);
+    if (Platform.OS === "web") {
+      alert(`${title}\n\n${message}`);
+      if (buttons && buttons.length > 0) {
+        const okButton = buttons.find(b => b.text === "OK" || b.onPress);
+        if (okButton && okButton.onPress) {
+          okButton.onPress();
+        }
+      }
+    } else {
+      Alert.alert(title, message, buttons);
+    }
+  };
+  
   // State variables
   const [finesList, setFinesList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -73,8 +88,18 @@ export default function FinesScreen({ user, token, initialSearchedFine, onClearI
   useEffect(() => {
     if (isOfficer) {
       fetchOfficerFines();
+    } else {
+      fetchMotoristFines();
     }
   }, []);
+
+  // Pre-populate payer name and phone when user changes
+  useEffect(() => {
+    if (user) {
+      setPayerName(user.name || "");
+      setPayerPhone(user.phone || "");
+    }
+  }, [user]);
 
   // Fetch saved cards when payment modal is opened
   useEffect(() => {
@@ -93,10 +118,29 @@ export default function FinesScreen({ user, token, initialSearchedFine, onClearI
       if (response.ok && resData.success) {
         setFinesList(resData.data || []);
       } else {
-        Alert.alert("Error", resData.message || "Failed to fetch fines");
+        showAlert("Error", resData.message || "Failed to fetch fines");
       }
     } catch (error) {
       console.log("Error fetching officer fines:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchMotoristFines = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/fines/motorist/my-fines`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const resData = await response.json();
+      if (response.ok && resData.success) {
+        setSearchedFines(resData.data || []);
+      } else {
+        showAlert("Error", resData.message || "Failed to fetch fines");
+      }
+    } catch (error) {
+      console.log("Error fetching motorist fines:", error);
     } finally {
       setLoading(false);
     }
@@ -148,7 +192,7 @@ export default function FinesScreen({ user, token, initialSearchedFine, onClearI
   // Motorist search handler (fines endpoint)
   const handleLookupReference = async () => {
     if (!searchQuery.trim()) {
-      Alert.alert("Error", "Please enter a reference number");
+      showAlert("Error", "Please enter a reference number");
       return;
     }
     setLoading(true);
@@ -165,10 +209,10 @@ export default function FinesScreen({ user, token, initialSearchedFine, onClearI
           return [fine, ...prev];
         });
       } else {
-        Alert.alert("Not Found", "No traffic fine matching this reference number.");
+        showAlert("Not Found", "No traffic fine matching this reference number.");
       }
     } catch (err) {
-      Alert.alert("Error", "Unable to contact the server.");
+      showAlert("Error", "Unable to contact the server.");
     } finally {
       setLoading(false);
     }
@@ -177,21 +221,11 @@ export default function FinesScreen({ user, token, initialSearchedFine, onClearI
   // Payment execution handler (payments endpoint)
   const handlePayFine = async () => {
     if (!payerName || !payerPhone) {
-      Alert.alert("Error", "Please fill payer details");
+      showAlert("Error", "Please fill payer details");
       return;
     }
 
-    // Validation for new card mode
-    if (!selectedCard) {
-      if (!cardNumber || !expiry || !cvv) {
-        Alert.alert("Error", "Please fill all credit card fields");
-        return;
-      }
-      if (cardNumber.length < 16) {
-        Alert.alert("Error", "Invalid card number");
-        return;
-      }
-    }
+
 
     setPaying(true);
     try {
@@ -231,7 +265,7 @@ export default function FinesScreen({ user, token, initialSearchedFine, onClearI
 
       const resData = await response.json();
       if (response.ok && resData.success) {
-        Alert.alert("Success", `Fine paid successfully!\nReceipt No: ${resData.data?.receiptNo || "ONLINE-PAY"}`);
+        showAlert("Success", `Fine paid successfully!\nReceipt No: ${resData.data?.receiptNo || "ONLINE-PAY"}`);
         setPaymentModalVisible(false);
         
         // Update the fine status locally in history list
@@ -244,11 +278,12 @@ export default function FinesScreen({ user, token, initialSearchedFine, onClearI
         setExpiry("");
         setCvv("");
         setSaveCardToggle(false);
+        fetchMotoristFines();
       } else {
-        Alert.alert("Payment Failed", resData.message || "Something went wrong.");
+        showAlert("Payment Failed", resData.message || "Something went wrong.");
       }
     } catch (error) {
-      Alert.alert("Error", "Unable to process payment due to network issue.");
+      showAlert("Error", "Unable to process payment due to network issue.");
     } finally {
       setPaying(false);
     }

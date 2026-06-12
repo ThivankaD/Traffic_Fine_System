@@ -72,6 +72,7 @@ app.get("/health", (req, res) => {
 
 // ─── API Routes ────────────────────────────────────────────────────────────────
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users/me/cards", cardRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/fine-categories", categoryRoutes);
 app.use("/api/v1/fines", fineRoutes);
@@ -79,7 +80,6 @@ app.use("/api/v1/payments", paymentRoutes);
 app.use("/api/v1/districts", districtRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/reports", reportRoutes);
-app.use("/api/v1/users/me/cards", cardRoutes);
 
 // ─── 404 Handler ───────────────────────────────────────────────────────────────
 app.use((req, res) => {

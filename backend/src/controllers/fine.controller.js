@@ -26,12 +26,14 @@ const createFine = async (req, res, next) => {
         .json({ success: false, message: "Officer profile not found." });
     }
 
+    const normalizedIdentifier = driverIdentifier ? driverIdentifier.trim().toUpperCase() : "";
+
     const motorist = await prisma.user.findFirst({
       where: {
         role: "USER",
         OR: [
-          { nic: driverIdentifier },
-          { dlNo: driverIdentifier }
+          { nic: normalizedIdentifier },
+          { dlNo: normalizedIdentifier }
         ]
       }
     });
@@ -305,6 +307,43 @@ const getMotoristFines = async (req, res, next) => {
   }
 };
 
+const getDriverDetailsForLookup = async (req, res, next) => {
+  try {
+    const { identifier } = req.params;
+    const normalizedIdentifier = identifier ? identifier.trim().toUpperCase() : "";
+
+    const motorist = await prisma.user.findFirst({
+      where: {
+        role: "USER",
+        OR: [
+          { nic: normalizedIdentifier },
+          { dlNo: normalizedIdentifier }
+        ]
+      }
+    });
+
+    if (!motorist) {
+      return res.status(404).json({
+        success: false,
+        message: "Motorist not found with the provided NIC or Driving License."
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        name: motorist.name,
+        phone: motorist.phone || "N/A",
+        email: motorist.email,
+        nic: motorist.nic || "N/A",
+        dlNo: motorist.dlNo || "N/A"
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createFine,
   getFineByReference,
@@ -313,4 +352,5 @@ module.exports = {
   getMyFines,
   cancelFine,
   getMotoristFines,
+  getDriverDetailsForLookup,
 };

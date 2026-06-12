@@ -21,13 +21,15 @@ const saveCard = async (req, res, next) => {
       return res.status(400).json({ success: false, message: "Missing required fields." });
     }
 
-    // Clean and mask the card number to store it securely (e.g. **** **** **** 3456)
+    // Clean and mask the card number to store it securely
     const cleanedNumber = cardNumber.replace(/\s+/g, "");
-    if (cleanedNumber.length < 12) {
-      return res.status(400).json({ success: false, message: "Invalid card number length." });
+    let maskedCardNumber = cleanedNumber;
+    if (cleanedNumber.length >= 4) {
+      const last4 = cleanedNumber.slice(-4);
+      maskedCardNumber = `**** **** **** ${last4}`;
+    } else {
+      maskedCardNumber = `**** **** **** ${cleanedNumber}`;
     }
-    const last4 = cleanedNumber.slice(-4);
-    const maskedCardNumber = `**** **** **** ${last4}`;
 
     // Detect card brand if not specified
     let detectedBrand = brand;
