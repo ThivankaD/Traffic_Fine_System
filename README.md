@@ -47,11 +47,11 @@ Traditionally, drivers must manually settle fines through physical payment proce
 
 The platform consists of:
 
-| Application | Purpose |
-|---|---|
-| 📱 Android App | On-the-spot fine payment |
-| 🌐 Payment SPA | Online fine payment portal |
-| 🖥️ Admin Portal | Monitoring and reporting dashboard |
+| Application         | Purpose                                        |
+| ------------------- | ---------------------------------------------- |
+| 📱 Android App      | On-the-spot fine payment                       |
+| 🌐 Payment SPA      | Online fine payment portal                     |
+| 🖥️ Admin Portal     | Monitoring and reporting dashboard             |
 | ⚙️ Backend REST API | Centralized business logic and data management |
 
 ---
@@ -142,38 +142,38 @@ This architecture balances simplicity and scalability while supporting rapid dev
 
 ## Backend
 
-| Technology | Purpose |
-|---|---|
-| Node.js | Runtime environment |
-| Express.js | REST API framework |
-| Prisma ORM | Database access layer |
-| JWT | Authentication |
-| bcryptjs | Password hashing |
-| PostgreSQL / MySQL | Database |
-| Twilio API | SMS notifications |
-| Helmet | HTTP security |
-| CORS | Cross-origin protection |
-| express-rate-limit | Rate limiting |
-| express-validator | Input validation |
-| Morgan/Winston | Logging |
+| Technology         | Purpose                 |
+| ------------------ | ----------------------- |
+| Node.js            | Runtime environment     |
+| Express.js         | REST API framework      |
+| Prisma ORM         | Database access layer   |
+| JWT                | Authentication          |
+| bcryptjs           | Password hashing        |
+| PostgreSQL / MySQL | Database                |
+| Twilio API         | SMS notifications       |
+| Helmet             | HTTP security           |
+| CORS               | Cross-origin protection |
+| express-rate-limit | Rate limiting           |
+| express-validator  | Input validation        |
+| Morgan/Winston     | Logging                 |
 
 ---
 
 ## Frontend (Web)
 
-| Technology | Purpose |
-|---|---|
-| React + Vite | Frontend framework |
-| Axios | HTTP communication |
-| Tailwind CSS | UI styling |
+| Technology   | Purpose             |
+| ------------ | ------------------- |
+| React + Vite | Frontend framework  |
+| Axios        | HTTP communication  |
+| Tailwind CSS | UI styling          |
 | React Router | Client-side routing |
 
 ---
 
 ## Mobile Application
 
-| Technology | Purpose |
-|---|---|
+| Technology        | Purpose            |
+| ----------------- | ------------------ |
 | Kotlin or Flutter | Android mobile app |
 
 ---
@@ -226,11 +226,11 @@ This architecture balances simplicity and scalability while supporting rapid dev
 
 # User Roles
 
-| Role | Responsibilities |
-|---|---|
-| 👮 Officer | Issue fines and receive payment notifications |
-| 🧑 Public User | Pay fines via mobile or web portal |
-| 🛡️ Admin | Monitor nationwide reports and collections |
+| Role           | Responsibilities                              |
+| -------------- | --------------------------------------------- |
+| 👮 Officer     | Issue fines and receive payment notifications |
+| 🧑 Public User | Pay fines via mobile or web portal            |
+| 🛡️ Admin       | Monitor nationwide reports and collections    |
 
 ---
 
@@ -284,15 +284,15 @@ Receipt generated
 
 ## Core Entities
 
-| Entity | Description |
-|---|---|
-| User | Stores authentication details |
-| Officer | Police officer information |
-| Fine | Traffic fine details |
-| FineCategory | Fine type and amount |
-| Payment | Payment records |
-| District | District information |
-| SMSLog | SMS notification logs |
+| Entity       | Description                   |
+| ------------ | ----------------------------- |
+| User         | Stores authentication details |
+| Officer      | Police officer information    |
+| Fine         | Traffic fine details          |
+| FineCategory | Fine type and amount          |
+| Payment      | Payment records               |
+| District     | District information          |
+| SMSLog       | SMS notification logs         |
 
 ---
 
@@ -412,41 +412,150 @@ traffic-fine-system/
 
 # REST API Endpoints
 
-# Authentication
-
-| Method | Endpoint | Description | Access |
-|---|---|---|---|
-| POST | `/api/v1/auth/register` | Register officer/admin | Public |
-| POST | `/api/v1/auth/login` | Login and receive JWT | Public |
+Base URL: `http://localhost:5000/api/v1`
 
 ---
 
-# Fines
+## 🔐 Authentication — `/api/v1/auth`
 
-| Method | Endpoint | Description | Access |
-|---|---|---|---|
-| POST | `/api/v1/fines` | Create new fine | Officer |
-| GET | `/api/v1/fines/:referenceNo` | Get fine details | Public |
-| GET | `/api/v1/fines` | Get all fines | Admin |
-
----
-
-# Payments
-
-| Method | Endpoint | Description | Access |
-|---|---|---|---|
-| POST | `/api/v1/payments` | Pay traffic fine | Public |
-| GET | `/api/v1/payments/:id` | Get payment receipt | Public |
+| Method | Endpoint         | Description                                                                                                                                | Access        |
+| ------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| POST   | `/auth/register` | Register a new user (Officer/Admin). Requires `name`, `email`, `password`, `role`. Officers also require `badgeNo`, `phone`, `districtId`. | Public        |
+| POST   | `/auth/login`    | Login with `email` and `password`. Returns `accessToken`, `refreshToken`, and user profile.                                                | Public        |
+| POST   | `/auth/refresh`  | Obtain a new `accessToken` using a valid `refreshToken`.                                                                                   | Public        |
+| POST   | `/auth/logout`   | Invalidate the current refresh token.                                                                                                      | Authenticated |
+| GET    | `/auth/me`       | Get the authenticated user's profile including district and officer details.                                                               | Authenticated |
 
 ---
 
-# Reports
+## 👥 Users — `/api/v1/users`
 
-| Method | Endpoint | Description | Access |
-|---|---|---|---|
-| GET | `/api/v1/reports/district` | District collections | Admin |
-| GET | `/api/v1/reports/category` | Category reports | Admin |
-| GET | `/api/v1/reports/summary` | Nationwide summary | Admin |
+| Method | Endpoint     | Description                                                                                              | Access |
+| ------ | ------------ | -------------------------------------------------------------------------------------------------------- | ------ |
+| GET    | `/users`     | List all users with pagination (`page`, `limit`).                                                        | Admin  |
+| GET    | `/users/:id` | Get a specific user by ID, including officer and district info.                                          | Admin  |
+| POST   | `/users`     | Create a new user. Officers also require `badgeNo`, `phone`, `districtId`.                               | Admin  |
+| PUT    | `/users/:id` | Update user details. Automatically creates or updates the linked officer profile if `role` is `OFFICER`. | Admin  |
+| DELETE | `/users/:id` | Soft-delete a user (sets `isActive: false`, clears refresh token).                                       | Admin  |
+
+---
+
+## 🏛️ Districts — `/api/v1/districts`
+
+| Method | Endpoint         | Description                                | Access        |
+| ------ | ---------------- | ------------------------------------------ | ------------- |
+| GET    | `/districts`     | List all districts ordered alphabetically. | Authenticated |
+| GET    | `/districts/:id` | Get a specific district by ID.             | Authenticated |
+| POST   | `/districts`     | Create a new district. Requires `name`.    | Admin         |
+| PUT    | `/districts/:id` | Update a district's name.                  | Admin         |
+
+---
+
+## 🏷️ Fine Categories — `/api/v1/categories`
+
+| Method | Endpoint          | Description                                                               | Access |
+| ------ | ----------------- | ------------------------------------------------------------------------- | ------ |
+| GET    | `/categories`     | List all active fine categories ordered by name.                          | Public |
+| GET    | `/categories/:id` | Get a specific active category by ID.                                     | Public |
+| POST   | `/categories`     | Create a new category. Requires `name`, `amount`. Optional `description`. | Admin  |
+| PUT    | `/categories/:id` | Update category fields (`name`, `amount`, `description`, `isActive`).     | Admin  |
+| DELETE | `/categories/:id` | Soft-delete a category (sets `isActive: false`).                          | Admin  |
+
+---
+
+## 🚗 Fines — `/api/v1/fines`
+
+| Method | Endpoint                     | Description                                                                                                                                                                         | Access          |
+| ------ | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| POST   | `/fines`                     | Issue a new fine. Requires `vehicleNo`, `driverName`, `offenseDate`, `location`, `categoryId`. Optional `driverPhone`, `driverNIC`, `notes`. Auto-generates a unique `referenceNo`. | Officer         |
+| GET    | `/fines`                     | List all fines with pagination. Filterable by `status`, `districtId`, `vehicleNo`, `officerId`.                                                                                     | Admin           |
+| GET    | `/fines/me`                  | List fines issued by the authenticated officer, with pagination.                                                                                                                    | Officer         |
+| GET    | `/fines/:referenceNo`        | Get full fine details by reference number, including category, officer, and payment.                                                                                                | Public          |
+| GET    | `/fines/:referenceNo/verify` | Verify a fine for payment. Requires `fineCategoryId` in the request body. Returns `valid`, `amount`, and `driverName`.                                                              | Public          |
+| PATCH  | `/fines/:id/cancel`          | Cancel a fine by ID. Cannot cancel a `PAID` fine.                                                                                                                                   | Admin / Officer |
+
+---
+
+## 💳 Payments — `/api/v1/payments`
+
+| Method | Endpoint                        | Description                                                                                                                                                                                                  | Access        |
+| ------ | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| POST   | `/payments`                     | Pay a fine. Requires `referenceNo`, `payerName`, `payerPhone`. Optional `paymentMethod` (default: `ONLINE`), `transactionId`. Marks fine as `PAID`, generates a receipt, and triggers an SMS to the officer. | Public        |
+| GET    | `/payments`                     | List all payments with pagination. Filterable by `status`, `districtId`, `from` (date), `to` (date).                                                                                                         | Admin         |
+| GET    | `/payments/:id`                 | Get payment details by payment ID.                                                                                                                                                                           | Authenticated |
+| GET    | `/payments/receipt/:receiptNo`  | Get payment details by receipt number.                                                                                                                                                                       | Public        |
+| GET    | `/payments/status/:referenceNo` | Get fine payment status by reference number. Returns `status`, `paid`, and payment record if available.                                                                                                      | Public        |
+
+---
+
+## 📲 Notifications (SMS) — `/api/v1/notifications`
+
+| Method | Endpoint                               | Description                                                                   | Access |
+| ------ | -------------------------------------- | ----------------------------------------------------------------------------- | ------ |
+| GET    | `/notifications/sms`                   | List all SMS logs with pagination, including linked payment and fine details. | Admin  |
+| GET    | `/notifications/sms/:paymentId`        | Get the latest SMS log for a specific payment ID.                             | Admin  |
+| POST   | `/notifications/sms/:paymentId/resend` | Resend the payment confirmation SMS to the officer for a given payment.       | Admin  |
+
+---
+
+### Query Parameters Summary
+
+**Pagination** (available on all list endpoints):
+
+| Parameter | Default | Max   | Description      |
+| --------- | ------- | ----- | ---------------- |
+| `page`    | `1`     | —     | Page number      |
+| `limit`   | `10`    | `100` | Results per page |
+
+**Fine Filters** (`GET /fines`):
+
+| Parameter    | Description                                            |
+| ------------ | ------------------------------------------------------ |
+| `status`     | Filter by fine status (`PENDING`, `PAID`, `CANCELLED`) |
+| `districtId` | Filter by officer's district                           |
+| `vehicleNo`  | Partial match on vehicle number                        |
+| `officerId`  | Filter by officer ID                                   |
+
+**Payment Filters** (`GET /payments`):
+
+| Parameter    | Description                  |
+| ------------ | ---------------------------- |
+| `status`     | Filter by payment status     |
+| `districtId` | Filter by officer's district |
+| `from`       | Start date (`YYYY-MM-DD`)    |
+| `to`         | End date (`YYYY-MM-DD`)      |
+
+---
+
+### Response Format
+
+All endpoints return a consistent JSON envelope:
+
+```json
+// Success
+{
+  "success": true,
+  "data": { }
+}
+
+// Paginated success
+{
+  "success": true,
+  "data": [],
+  "pagination": {
+    "total": 100,
+    "page": 1,
+    "limit": 10,
+    "totalPages": 10
+  }
+}
+
+// Error
+{
+  "success": false,
+  "message": "Descriptive error message."
+}
+```
 
 ---
 
@@ -703,28 +812,27 @@ Possible future improvements:
 
 # Team Members
 
-| Name | Student ID | Responsibility |
-|---|---|---|
-| Member 1 | | Backend Core + Authentication |
-| Member 2 | | Fine & Payment APIs |
-| Member 3 | | Android Application |
-| Member 4 | | Payment Web Portal |
-| Member 5 | | Admin Dashboard |
-| Member 6 | | SMS Integration + Testing + Git Management |
+| Name     | Student ID | Responsibility                             |
+| -------- | ---------- | ------------------------------------------ |
+| Member 1 |            | Backend Core + Authentication              |
+| Member 2 |            | Fine & Payment APIs                        |
+| Member 3 |            | Android Application                        |
+| Member 4 |            | Payment Web Portal                         |
+| Member 5 |            | Admin Dashboard                            |
+| Member 6 |            | SMS Integration + Testing + Git Management |
 
 ---
 
 # Academic Information
 
-| Module | Software Architecture |
-|---|---|
-| University | University of Ruhuna |
-| Year | 2026 |
-| Project Type | Group Project |
+| Module       | Software Architecture |
+| ------------ | --------------------- |
+| University   | University of Ruhuna  |
+| Year         | 2026                  |
+| Project Type | Group Project         |
 
 ---
 
 # License
 
 This project is developed strictly for academic and educational purposes as part of the Software Architecture module at the University of Ruhuna.
-
