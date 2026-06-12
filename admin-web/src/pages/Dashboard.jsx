@@ -88,7 +88,7 @@ export default function Dashboard() {
       <section className="dashboard-hero">
         <div className="dashboard-hero-copy">
           <span className="dashboard-eyebrow">Traffic fine operations</span>
-          <h2>Professional control center for fines, payments, and recovery.</h2>
+          <h2>Control center for fines, payments, and recovery.</h2>
           <p>
             A focused overview for monitoring collections, pending cases, and live payment activity
             without clutter.
