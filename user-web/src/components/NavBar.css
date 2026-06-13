@@ -34,7 +34,7 @@
 }
 
 .nav-item.active {
-  color: var(--accent);
+  color: var(--primary);
   font-weight: 700;
 }
 

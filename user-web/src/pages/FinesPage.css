@@ -118,7 +118,7 @@
 .pay-button {
   width: 100%;
   padding: 12px;
-  background-color: var(--accent);
+  background-color: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -128,5 +128,5 @@
 }
 
 .pay-button:hover {
-  background-color: #b91c1c;
+  background-color: #1e3a8a;
 }

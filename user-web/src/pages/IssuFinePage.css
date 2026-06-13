@@ -106,13 +106,13 @@
 }
 
 .submit-button {
-  background-color: var(--accent);
+  background-color: var(--primary);
   color: white;
   margin-bottom: 80px;
 }
 
 .submit-button:hover:not(:disabled) {
-  background-color: #b91c1c;
+  background-color: #1e3a8a;
 }
 
 .submit-button:disabled {
