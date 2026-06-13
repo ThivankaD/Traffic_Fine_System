@@ -187,12 +187,12 @@ form {
 }
 
 .pay-btn {
-  background-color: var(--accent);
+  background-color: var(--primary);
   color: white;
 }
 
 .pay-btn:hover:not(:disabled) {
-  background-color: #b91c1c;
+  background-color: #1e3a8a;
 }
 
 .cancel-btn:disabled,
